@@ -30,6 +30,16 @@ tickers = list(sort(tickers))
 # number of assets in portfolio
 n = len(tickers)
 
+# Info about the assets
+cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
+ * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD, 
+* Every asset in this dashboard is expressed in mexican pesos.
+* Its main components are:
+** UNITED STATES TREASURY (44.23%).
+** FEDERAL NATIONAL MORTGAGE ASSOCIATION I (11.04%) and II (6.05%).
+** FEDERAL HOME LOAN MORTGAGE CORPORATION	(5.57%).
+** UNIFORM MBS  (1.54%).'''
+
 # function to download data from yahoofinance
 def download_data(assets, start_date, end_date):
   data = yf.download(assets, start = start_date, end = end_date)["Close"]
@@ -313,6 +323,8 @@ tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
 with tab1:
   st.header("Individual Asset Analysis")
   selected_asset = st.selectbox("Select an asset to analyze:", tickers)
+
+  st.write(cadena1)
 
   st.write(f"Daily Summary Statistics for the returns of the {selected_asset} ETF between 2010 and 2020.")
   
