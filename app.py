@@ -318,7 +318,7 @@ with tab1:
   
   col1, col2, col3 = st.columns(3)
   col1.metric("Mean Returns", f"{100*summary_df.loc['mean',selected_asset]:.2%}")
-  col2.metric("Volatility", f"{summary_df.loc['sd',selected_asset]:.2f}")
+  col2.metric("Volatility", f"{summary_df.loc['sd',selected_asset]:.4f}")
   col3.metric("Skew", f"{summary_df.loc['skew',selected_asset]:.2f}")
   
   col4, col5, col6 = st.columns(3)
