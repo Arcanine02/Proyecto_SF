@@ -316,7 +316,7 @@ with tab1:
 
   fig_asset = go.Figure()
 
-  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final[selected_asset], name='QQQ'))
+  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final[selected_asset], name = selected_asset))
   fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final['S&P 500'], name='S&P 500'))
   
   fig_asset.update_layout(
@@ -325,3 +325,5 @@ with tab1:
       yaxis_title='Precio Normalizado')
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
+
+  st.write((summary_df.T).loc[selected_asset])
