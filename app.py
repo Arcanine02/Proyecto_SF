@@ -104,7 +104,6 @@ summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,so
 
 # initial weights for every asset: equal weights.
 initial_wts = (np.ones(n)/n)[:,newaxis]
-shape(initial_wts)
 
 # annualized daiy returns.
 ret_an = array(returns.mean()*252)[:,newaxis]
@@ -277,7 +276,6 @@ backtest_sharpes = backtest_returns.apply(sharpe_ratio, args = (rf/252,), axis =
 backtest_sortinos = backtest_returns.apply(sortino_ratio, args = (rf/252,), axis = 0)
 backtest_drawdons = backtest_returns.apply(drawdon, axis=0)
 backtest_cum_ret = (backtest_returns+1).cumprod()
-backtest_cum_ret.iloc[-1]
 
 backtest_summary_df = pd.DataFrame([backtest_means,backtest_sds,
                                     backtest_skews,backtest_kurtosis,
@@ -313,3 +311,15 @@ tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
 with tab1:
   st.header("Individual Asset Analysis")
   selected_asset = st.selectbox("Seleccione un activo para analizar:", tickers)
+
+  fig_asset = go.Figure()
+
+  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final[selected_asset], name='QQQ', line=dict(color='blue')))
+  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final['S&P 500'], name='S&P 500', line=dict(color='red')))
+  
+  fig_asset.update_layout(
+      title=f'Precio Normalizado: {selected_asset} vs S&P 500 (Base 100)',
+      xaxis_title='Fecha',
+      yaxis_title='Precio Normalizado')
+
+  st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
