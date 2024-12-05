@@ -349,7 +349,7 @@ with tab2:
   st.header("Optimal Portfolios")
   # Plot efficient frontier portfolio
   # Plot maximum sharpe portfolio
-  fig.add_scatter(
+  fig_ef.add_scatter(
       mode='markers',
       x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
       y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
@@ -358,7 +358,7 @@ with tab2:
   ).update(layout_showlegend=False)
   
   # Plot minimum variance portfolio
-  fig.add_scatter(
+  fig_ef.add_scatter(
       mode='markers',
       x=[100*portfolio_stats(min_vol_port['x'])[1]],
       y=[100*portfolio_stats(min_vol_port['x'])[0]],
@@ -367,6 +367,6 @@ with tab2:
   ).update(layout_showlegend=False)
   
   # Show spikes
-  fig.update_xaxes(showspikes=True)
-  fig.update_yaxes(showspikes=True)
+  fig_ef.update_xaxes(showspikes=True)
+  fig_ef.update_yaxes(showspikes=True)
   st.plotly_chart(fig_ef, use_container_width=True, key="efficient_frontier")
