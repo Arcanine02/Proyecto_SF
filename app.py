@@ -305,6 +305,8 @@ df_final = df_mxn
 df_final['S&P 500'] = spx_all_mxn
 df_final = df_final.apply(lambda x: 100*(x/x[0]))
 
+# Visualizacion
+
 # Crear pestañas
 tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
 
@@ -314,8 +316,8 @@ with tab1:
 
   fig_asset = go.Figure()
 
-  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final[selected_asset], name='QQQ', line=dict(color='blue')))
-  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final['S&P 500'], name='S&P 500', line=dict(color='red')))
+  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final[selected_asset], name='QQQ'))
+  fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final['S&P 500'], name='S&P 500'))
   
   fig_asset.update_layout(
       title=f'Precio Normalizado: {selected_asset} vs S&P 500 (Base 100)',
