@@ -317,20 +317,20 @@ with tab1:
   st.write(f"Daily Summary Statistics for the {selected_asset} ETF between 2010 and 2020.")
   
   col1, col2, col3 = st.columns(3)
-  col1.metric("Mean Daily Returns (%)", f"{100*summary_df.loc['mean',selected_asset]:.2f}")
-  col2.metric("Daily Volatility (%)", f"{100*summary_df.loc['sd',selected_asset]:.2f}")
-  col3.metric("Daily Skew (%)", f"{100*summary_df.loc['skew',selected_asset]:.2f}")
+  col1.metric("Mean Daily Returns", f"{100*summary_df.loc['mean',selected_asset]:.2%}")
+  col2.metric("Daily Volatility", f"{100*summary_df.loc['sd',selected_asset]:.2%}")
+  col3.metric("Daily Skew", f"{summary_df.loc['skew',selected_asset]:.2f}")
   
   col4, col5, col6 = st.columns(3)
-  col4.metric("Daily Kurtosis (%)", f"{100*summary_df.loc['kurtosis',selected_asset]:.2f}")
-  col5.metric("Mean VaR 95% (%)", f"{100*summary_df.loc['VaR 95%',selected_asset]:.2f}")
-  col6.metric("Daily cVaR 95% (%)", f"{100*summary_df.loc['cVaR 95%',selected_asset]:.2f}")
+  col4.metric("Daily Kurtosis", f"{summary_df.loc['kurtosis',selected_asset]:.2f}")
+  col5.metric("Mean VaR 95%", f"{100*summary_df.loc['VaR 95%',selected_asset]:.2%}")
+  col6.metric("Daily cVaR 95%", f"{100*summary_df.loc['cVaR 95%',selected_asset]:.2%}")
   
   
   col7, col8, col9 = st.columns(3)
-  col7.metric("Daily Sharpe Ratio (%)", f"{100*summary_df.loc['sharpe ratio',selected_asset]:.2f}")
-  col8.metric("Daily Sortino Ratio (%)", f"{100*summary_df.loc['sortino ratio',selected_asset]:.2f}")
-  col9.metric("Daily Max Drawdon (%)", f"{100*summary_df.loc['max drawdon',selected_asset]:.2f}")
+  col7.metric("Daily Sharpe Ratio", f"{summary_df.loc['sharpe ratio',selected_asset]:.2f}")
+  col8.metric("Daily Sortino Ratio", f"{summary_df.loc['sortino ratio',selected_asset]:.2f}")
+  col9.metric("Daily Max Drawdon", f"{summary_df.loc['max drawdon',selected_asset]:.2f}")
         
 
   fig_asset = go.Figure()
