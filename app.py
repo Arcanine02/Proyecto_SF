@@ -295,3 +295,22 @@ backtest_summary_df.columns = ['Max Sharpe Ratio', 'Min Volatility', '10% Return
 backtest_summary_df.index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 
                              'sharpe ratio','sortino ratio','max drawdon', 'cumulative returns',
                              '2022 annual returns','2023 annual returns', 'total returns']
+
+# Asset Visualization df
+# S&P500 en pesos
+spx_all = download_data("^GSPC", inicio, fin)
+# calculating assets prices in mexican pesos
+spx_all = spx_all.join(df_mxn)
+spx_all = spx_all['^GSPC']
+spx_all_mxn = spx_all.mul(mxn, axis = 0)
+spx_all_mxn.columns = ['S&P 500']
+df_final = df_mxn
+df_final['S&P 500'] = spx_all_mxn
+df_final = df_final.apply(lambda x: 100*(x/x[0]))
+
+# Crear pestañas
+tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
+
+with tab1:
+  st.header("Individual Asset Analysis")
+  selected_asset = st.selectbox("Seleccione un activo para analizar:", tickers)
