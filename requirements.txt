@@ -1,5 +1,4 @@
-numpy
-pandas
+yfinance
 warnings
 plotly
 datetime
@@ -7,4 +6,4 @@ xlrd
 exchange_calendars
 openpyxl
 scipy
-yfinance
+
