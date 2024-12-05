@@ -348,6 +348,13 @@ with tab1:
 with tab2:
   st.header("Optimal Portfolios")
   # Plot efficient frontier portfolio
+  fig_ef = px.scatter(
+    efport, x='targetvols', y='targetrets',  color='targetsharpe', 
+    range_color = [0.8,1.3],
+    labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
+    title="Efficient Frontier Portfolio"
+     ).update_traces(mode='markers', marker=dict(symbol='cross'))
+  
   # Plot maximum sharpe portfolio
   fig_ef.add_scatter(
       mode='markers',
