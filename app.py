@@ -11,7 +11,7 @@ import plotly as plt
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import date
-!pip install -q streamlit
+# !pip install -q streamlit
 import streamlit as st
 import scipy.optimize as sco
 
