@@ -32,8 +32,7 @@ n = len(tickers)
 
 # Info about the assets
 cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
- * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD, 
-* Every asset in this dashboard is expressed in mexican pesos.
+ * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
 * Its main components are:
 ** UNITED STATES TREASURY (44.23%).
 ** FEDERAL NATIONAL MORTGAGE ASSOCIATION I (11.04%) and II (6.05%).
@@ -322,6 +321,7 @@ tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
 
 with tab1:
   st.header("Individual Asset Analysis")
+  st.write("Every asset in this dashboard is expressed in mexican pesos.")
   selected_asset = st.selectbox("Select an asset to analyze:", tickers)
 
   st.write(cadena1)
