@@ -230,7 +230,7 @@ omega = np.diag(diag(P@prior_cov@P.T))
 
 # Posterior distribution and weights
 posterior_mean = np.linalg.inv(np.linalg.inv(prior_cov)+P.T@np.linalg.inv(omega)@P)@(np.linalg.inv(prior_cov)@prior_mean+P.T@np.linalg.inv(omega)@Q)
-bl_port_wts_wts = ((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean
+bl_port_wts = ((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean
 
 
 # 2010-2020 portfolio summary
