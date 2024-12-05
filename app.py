@@ -340,7 +340,7 @@ with tab1:
   
   fig_asset.update_layout(
       title=f'Normalized Prices: {selected_asset} vs S&P 500 (Base 100)',
-      xaxis_title='Fecha',
+      xaxis_title='Date',
       yaxis_title='Normalized Price')
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
