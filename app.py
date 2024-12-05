@@ -356,13 +356,12 @@ with tab2:
   
   
   # Plot maximum sharpe portfolio
-  fig_ef.add_scatter(
-      mode='markers',
-      x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
-      y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
-      marker=dict(color='red', size=20, symbol='star'),
-      name = 'Max Sharpe'
-  ).update(layout_showlegend=False)
+  fig = px.scatter(
+    efport, x='targetvols', y='targetrets',  color='targetsharpe', 
+    range_color = (min(efport['targetsharpe'])-0.01, max(efport['targetsharpe'])+0.01),
+    labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
+    title="Efficient Frontier Portfolio"
+     ).update_traces(mode='markers', marker=dict(symbol='cross'))
   
   # Plot minimum variance portfolio
   fig_ef.add_scatter(
