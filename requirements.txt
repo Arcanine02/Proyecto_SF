@@ -1,5 +1,4 @@
 yfinance
-warnings
 plotly
 datetime
 xlrd
