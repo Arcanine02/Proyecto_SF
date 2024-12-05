@@ -328,8 +328,8 @@ with tab1:
   
   
   col7, col8, col9 = st.columns(3)
-  col7.metric("Mean Sharpe Ratio (%)", f"{100*summary_df.loc['sharpe ratio',selected_asset]:.2%}")
-  col8.metric("Daily Sortino Ratio (%)", f"{100*summary_df.loc['sortino ratio	',selected_asset]:.2f}")
+  col7.metric("Daily Sharpe Ratio (%)", f"{100*summary_df.loc['sharpe ratio',selected_asset]:.2%}")
+  col8.metric("Daily Sortino Ratio (%)", f"{100*summary_df.loc['sortino ratio',selected_asset]:.2f}")
   col9.metric("Daily Max Drawdon (%)", f"{100*summary_df.loc['max drawdon',selected_asset]:.2f}")
         
 
