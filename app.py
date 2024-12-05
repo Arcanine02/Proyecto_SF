@@ -5,8 +5,8 @@ from numpy.linalg import multi_dot
 import pandas as pd
 import yfinance as yf
 # Ignore warnings
-import warnings
-warnings.filterwarnings('ignore')
+# import warnings
+# warnings.filterwarnings('ignore')
 import plotly as plt
 import plotly.graph_objects as go
 import plotly.express as px
