@@ -15,13 +15,13 @@ from datetime import date
 import streamlit as st
 import scipy.optimize as sco
 
-''' etfs
-* GLD: gold
-* EMB: Emerging markets bonds etf
-* AGG: USA bonds etf
-* QQQ: Nasdaq etf
-* SPEM: Emerging markets equity etf
-* MXN=X: USD/MXN'''
+# ''' etfs
+# * GLD: gold
+# * EMB: Emerging markets bonds etf
+# * AGG: USA bonds etf
+# * QQQ: Nasdaq etf
+# * SPEM: Emerging markets equity etf
+# * MXN=X: USD/MXN'''
 
 # Porfolio tickers.
 tickers = ["EMB","AGG","QQQ","GLD","SPEM"]
@@ -104,7 +104,6 @@ summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,so
 
 # initial weights for every asset: equal weights.
 initial_wts = (np.ones(n)/n)[:,newaxis]
-initial_wts
 shape(initial_wts)
 
 # annualized daiy returns.
