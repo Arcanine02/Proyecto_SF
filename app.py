@@ -34,10 +34,10 @@ n = len(tickers)
 cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
  * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
 * Its main components are:
-** UNITED STATES TREASURY (44.23%).
-** FEDERAL NATIONAL MORTGAGE ASSOCIATION I (11.04%) and II (6.05%).
-** FEDERAL HOME LOAN MORTGAGE CORPORATION	(5.57%).
-** UNIFORM MBS  (1.54%).'''
+ United States Treasury (44.23%),
+ Federal National Mortgage Association I (11.04%) And II (6.05%),
+ Federal Home Loan Mortgage Corporation (5.57%),
+ and Uniform MBS (1.54%).'''
 
 # function to download data from yahoofinance
 def download_data(assets, start_date, end_date):
