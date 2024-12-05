@@ -348,23 +348,17 @@ with tab1:
 with tab2:
   st.header("Optimal Portfolios")
   # Plot efficient frontier portfolio
-  fig_ef = px.scatter(
-      efport, x='targetvols', y='targetrets',  color='targetsharpe',
-      labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
-      title="Efficient Frontier Portfolio"
-       ).update_traces(mode='markers', marker=dict(symbol='cross'))
-  
-  
   # Plot maximum sharpe portfolio
-  fig = px.scatter(
-    efport, x='targetvols', y='targetrets',  color='targetsharpe', 
-    range_color = [0.8,1.3],
-    labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
-    title="Efficient Frontier Portfolio"
-     ).update_traces(mode='markers', marker=dict(symbol='cross'))
+  fig.add_scatter(
+      mode='markers',
+      x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
+      y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
+      marker=dict(color='red', size=20, symbol='star'),
+      name = 'Max Sharpe'
+  ).update(layout_showlegend=False)
   
   # Plot minimum variance portfolio
-  fig_ef.add_scatter(
+  fig.add_scatter(
       mode='markers',
       x=[100*portfolio_stats(min_vol_port['x'])[1]],
       y=[100*portfolio_stats(min_vol_port['x'])[0]],
@@ -373,6 +367,6 @@ with tab2:
   ).update(layout_showlegend=False)
   
   # Show spikes
-  fig_ef.update_xaxes(showspikes=True)
-  fig_ef.update_yaxes(showspikes=True)
+  fig.update_xaxes(showspikes=True)
+  fig.update_yaxes(showspikes=True)
   st.plotly_chart(fig_ef, use_container_width=True, key="efficient_frontier")
