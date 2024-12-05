@@ -358,7 +358,7 @@ with tab2:
   # Plot maximum sharpe portfolio
   fig = px.scatter(
     efport, x='targetvols', y='targetrets',  color='targetsharpe', 
-    range_color = (min(efport['targetsharpe'])-0.01, max(efport['targetsharpe'])+0.01),
+    range_color = [0.8,1.3],
     labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
     title="Efficient Frontier Portfolio"
      ).update_traces(mode='markers', marker=dict(symbol='cross'))
