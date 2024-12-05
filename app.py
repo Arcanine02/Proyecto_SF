@@ -228,7 +228,7 @@ omega = np.diag(diag(P@prior_cov@P.T))
 
 # Posterior distribution and weights
 posterior_mean = np.linalg.inv(np.linalg.inv(prior_cov)+P.T@np.linalg.inv(omega)@P)@(np.linalg.inv(prior_cov)@prior_mean+P.T@np.linalg.inv(omega)@Q)
-bl_port_wts = ((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean
+bl_port_wts = (((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean)/100
 
 
 # 2010-2020 portfolio summary
@@ -236,9 +236,9 @@ max_sharpe_port_data = np.concatenate([np.around(max_sharpe_port['x']*100,2),
                         np.around(portfolio_stats(max_sharpe_port['x']),4)])
 min_vol_port_data = np.concatenate([around(min_vol_port['x']*100,2), 
                      around(portfolio_stats(min_vol_port['x']),4)])
-ret_10_port_data = np.concatenate([around(100*efport.iloc[0,3],2),
+ret_10_port_data = np.concatenate([around(efport.iloc[0,3]*100,2),
                     around(portfolio_stats(efport.iloc[0,3]),4)])
-bl_port_data = np.concatenate([around(bl_port_wts.flatten(),2),
+bl_port_data = np.concatenate([around(bl_port_wts.flatten()*100,2),
                     around(portfolio_stats(bl_port_wts.flatten()),4)])
 
 test_df = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_port_data,
