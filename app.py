@@ -312,7 +312,7 @@ tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
 
 with tab1:
   st.header("Individual Asset Analysis")
-  selected_asset = st.selectbox("Seleccione un activo para analizar:", tickers)
+  selected_asset = st.selectbox("Select an asset to analyze:", tickers)
 
   st.write(f"Daily Summary Statistics for the {selected_asset} ETF between 2010 and 2020.")
   
@@ -339,9 +339,9 @@ with tab1:
   fig_asset.add_trace(go.Scatter(x=df_final.index, y=df_final['S&P 500'], name='S&P 500'))
   
   fig_asset.update_layout(
-      title=f'Precio Normalizado: {selected_asset} vs S&P 500 (Base 100)',
+      title=f'Normalized Prices: {selected_asset} vs S&P 500 (Base 100)',
       xaxis_title='Fecha',
-      yaxis_title='Precio Normalizado')
+      yaxis_title='Normalized Price')
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
 
