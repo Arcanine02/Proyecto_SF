@@ -4,5 +4,7 @@ yfinance
 warnings
 plotly
 datetime
-streamlit
+xlrd
+exchange_calendars
+openpyxl
 scipy
