@@ -345,3 +345,35 @@ with tab1:
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
 
+with tab2:
+  st.header("Optimal Portfolios")
+  # Plot efficient frontier portfolio
+  fig_ef = px.scatter(
+      efport, x='targetvols', y='targetrets',  color='targetsharpe',
+      labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
+      title="Efficient Frontier Portfolio"
+       ).update_traces(mode='markers', marker=dict(symbol='cross'))
+  
+  
+  # Plot maximum sharpe portfolio
+  fig_ef.add_scatter(
+      mode='markers',
+      x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
+      y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
+      marker=dict(color='red', size=20, symbol='star'),
+      name = 'Max Sharpe'
+  ).update(layout_showlegend=False)
+  
+  # Plot minimum variance portfolio
+  fig_ef.add_scatter(
+      mode='markers',
+      x=[100*portfolio_stats(min_vol_port['x'])[1]],
+      y=[100*portfolio_stats(min_vol_port['x'])[0]],
+      marker=dict(color='green', size=20, symbol='star'),
+      name = 'Min Variance'
+  ).update(layout_showlegend=False)
+  
+  # Show spikes
+  fig_ef.update_xaxes(showspikes=True)
+  fig_ef.update_yaxes(showspikes=True)
+  st.plotly_chart(fig_ef, use_container_width=True, key="efficient_frontier")
