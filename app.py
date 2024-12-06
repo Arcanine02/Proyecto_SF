@@ -719,7 +719,7 @@ with tab3:
  fig_port1_bl.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
   
  fig_port1_bl.update_layout(
-     title=f'Normalized Prices: Black-Litterman vs S&P 500 (Base 100)',
+     title= "Normalized Prices: Black-Litterman vs S&P 500 (Base 100)",
      xaxis_title='Date',
      yaxis_title='Normalized Price')
 
@@ -730,7 +730,7 @@ with tab3:
  hist_fig_port_bl = crear_histograma_distribucion(hist_returns_port_bl,
                                           np.quantile(hist_returns_port_bl,0.05) , 
                                           calcular_cvar(hist_returns_port_bl,0.95), 
-                                          f"Daily returns of {"Black-litterman"} between 2010 and 2020")
+                                          "Daily returns of Black-Litterman between 2010 and 2020")
  
  st.plotly_chart(hist_fig_port_bl, use_container_width=True, key="returns_hist_port_bl")
 
@@ -771,10 +771,10 @@ with tab3:
  st.plotly_chart(fig_port2_bl, use_container_width=True, key="price_normalized_port_2_bl")
  
  # Histogram for VaR and cVaR
- hist_returns_port_2_bl = port_returns_final_post["Black-Litterman"]
+ hist_returns_port_2_bl = port_returns_final_post["Black-litterman"]
  hist_fig_port_2_bl = crear_histograma_distribucion(hist_returns_port_2_bl,
                                           np.quantile(hist_returns_port_2_bl,0.05) , 
                                           calcular_cvar(hist_returns_port_2_bl,0.95), 
-                                          f"Daily returns of {"Black-Litterman"} between 2021 and 2023")
+                                          "Daily returns of Black-Litterman between 2021 and 2023")
  
  st.plotly_chart(hist_fig_port_2_bl, use_container_width=True, key="returns_hist_port_2_bl")
