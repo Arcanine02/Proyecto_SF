@@ -283,7 +283,7 @@ min_vol_port_stats = list(zip(stats, around(portfolio_stats(min_vol_port['x']),4
 @st.cache_data
 def efficient_frontier():
  # Efficient frontier params
- targetrets = linspace(0.1,0.2,20)
+ targetrets = linspace(0.03,0.23,20)
  tvols = []
  weights_list = []
  
