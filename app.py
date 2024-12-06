@@ -520,7 +520,7 @@ port_prices_final_pre = pre_df(port_prices_final)
 port_prices_final_post = post_df(port_prices_final)
 
 @st.cache_data
-def final_potfolio_returns():
+def final_portfolio_returns():
  port_returns_final = port_prices_final.pct_change().dropna()
  port_returns_final = port_returns_final.replace([np.inf, -np.inf,-1],np.nan).dropna()
  return port_returns_final
