@@ -519,16 +519,16 @@ with tab2:
  selected_portfolio = st.selectbox("Select a portfolio to analyze:", markowitz_ports)
  st.write("Weights of the assets in the portfolio")
  col_w1, col_w2, col_w3, col_w4, col_w5 = st.columns(5)
- col_w1.metric(tickers[0], f"{100*test_df.loc[tickers[0],selected_portfolio]:.2%}")
- col_w2.metric(tickers[1], f"{100*test_df.loc[tickers[1],selected_portfolio]:.2%}")
- col_w3.metric(tickers[2], f"{100*test_df.loc[tickers[2],selected_portfolio]:.2%}")
- col_w4.metric(tickers[3], f"{100*test_df.loc[tickers[3],selected_portfolio]:.2%}")
- col_w5.metric(tickers[4], f"{100*test_df.loc[tickers[4],selected_portfolio]:.2%}")
+ col_w1.metric(tickers[0], f"{test_df.loc[tickers[0],selected_portfolio]:.2%}")
+ col_w2.metric(tickers[1], f"{test_df.loc[tickers[1],selected_portfolio]:.2%}")
+ col_w3.metric(tickers[2], f"{test_df.loc[tickers[2],selected_portfolio]:.2%}")
+ col_w4.metric(tickers[3], f"{test_df.loc[tickers[3],selected_portfolio]:.2%}")
+ col_w5.metric(tickers[4], f"{test_df.loc[tickers[4],selected_portfolio]:.2%}")
  
  st.subheader("2010-2020 Portfolio Construction")
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1, col_m2, col_m3 = st.columns(3)
- col_m1.metric("Mean", f"{100*test_df.loc["Returns",selected_portfolio]:.2%}")
+ col_m1.metric("Mean", f"{test_df.loc["Returns",selected_portfolio]:.2%}")
  col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.2f}")
  col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
 
@@ -559,9 +559,24 @@ with tab2:
 
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1b, col_m2b, col_m3b = st.columns(3)
- col_m1b.metric("Mean", f"{100*test_df.loc["Returns",selected_portfolio]:.2%}")
- col_m2b.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.2f}")
- col_m3b.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
+ col_m1b.metric("Mean", f"{backtest_summary_df.loc["mean",selected_portfolio]:.2%}")
+ col_m2b.metric("Volatility", f"{backtest_summary_df.loc["sd",selected_portfolio]:.2f}")
+ col_m3b.metric("Skew", f"{backtest_summary_df.loc["skew",selected_portfolio]:.2f}")
+ 
+ col_m4b, col_m5b, col_m6b = st.columns(3)
+ col_m4b.metric("Kurtosis", f"{backtest_summary_df.loc["kurtosis",selected_portfolio]:.2%}")
+ col_m5b.metric("VaR 95%", f"{backtest_summary_df.loc["VaR 95%",selected_portfolio]:.2f}")
+ col_m6b.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%",selected_portfolio]:.2f}")
+ 
+ col_m7b, col_m8b, col_m9b = st.columns(3)
+ col_m7b.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio",selected_portfolio]:.2%}")
+ col_m8b.metric("VSorino Ratio", f"{backtest_summary_df.loc["sortino ratio",selected_portfolio]:.2f}")
+ col_m9b.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon	",selected_portfolio]:.2f}")
+ 
+ col_m10b, col_m11b, col_m12b = st.columns(3)
+ col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns	",selected_portfolio]:.2%}")
+ col_m11b.metric("2023 Returns", f"{backtest_summary_df.loc["2023 annual returns	",selected_portfolio]:.2f}")
+ col_m12b.metric("Total Cumulative Returns", f"{backtest_summary_df.loc["total returns",selected_portfolio]:.2f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port2 = go.Figure()
