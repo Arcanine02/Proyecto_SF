@@ -299,14 +299,12 @@ def efficient_frontier():
  weights_list = []
  
  for tr in targetrets:
- 
-     ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
+  initial_wts_min_vol = np.ones(n)/n
+  ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
                 {'type': 'eq', 'fun': lambda x: sum(x) - 1})
- 
-     opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
- 
-     tvols.append(opt_ef['fun'])
-     weights_list.append(opt_ef['x'])
+  opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
+  tvols.append(opt_ef['fun'])
+  weights_list.append(opt_ef['x'])
  
  targetvols = array(tvols)
  # Dataframe for EF
@@ -316,11 +314,8 @@ def efficient_frontier():
      'targetsharpe': around(targetrets/targetvols,2),
      'weights': weights_list
  })
- 
- 
  return epfort
-
-
+ 
 epfort = efficient_frontier()
 
 # Extracting weights and stats for the 10% return portfolio
