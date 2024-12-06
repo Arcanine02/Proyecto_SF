@@ -441,10 +441,9 @@ def backtest_stats():
  backtest_summary_df.index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 
                               'sharpe ratio','sortino ratio','max drawdon', 'cumulative returns',
                               '2022 annual returns','2023 annual returns', 'total returns']
-
  return backtest_summary_df
 
-backtest_summary_df = backtest_stats
+backtest_summary_df = backtest_stats()
 
 @st.cache_data
 def pre_df(x):
@@ -485,7 +484,6 @@ df_final_post = post_df(df_final)
 # Full period portfolios prices
 @st.cache_data
 def final_portfolio_prices():
-
  max_sharpe_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
  min_vol_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
  ret_10_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
