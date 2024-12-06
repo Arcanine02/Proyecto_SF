@@ -38,35 +38,34 @@ cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (
  Federal National Mortgage Association I (11.04%) And II (6.05%),
  Federal Home Loan Mortgage Corporation (5.57%),
  and Uniform MBS (1.54%).
- * For ore information visit https://www.ishares.com/us/products/239458/ishares-core-total-us-bond-market-etf.'''
+ * For more information visit https://www.ishares.com/us/products/239458/ishares-core-total-us-bond-market-etf.'''
 
 cadena2 = ''' * Managed by BlackRock, the iShares J.P. Morgan USD Emerging Markets Bond ETF is (as given by its name) an Emerging Markets Bond ETF 
 that exchanged in NASDAQ seeks to track the investment results of an index composed of U.S. dollar-denominated, emerging market bonds.
 * Its benchmark index is the J.P. Morgan EMBI Global Core Index.
 * This ETF is mostly formed by sovereign assets (85%) from over 30 countries such as Saudi Arabia (5.85%), Mexico (5.67%), 
 Turkey (4.92%), United Arab Emirates (4.68%), Indonesia (4.67%).
-* For ore information visit https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf.'''
+* For more information visit https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf.'''
 
 
 cadena3 = ''' * Managed by SPDR (and by extension S&P), the SPDR Gold Shares (NYSEArca) ETF seeks to track the returns of the gold asset.
 * It is a relatively low priced ETF and is the largest physically backed gold ETF in the world.
-* For ore information visit https://www.spdrgoldshares.com/.'''
+* For more information visit https://www.spdrgoldshares.com/.'''
 
 
 cadena4 = ''' * Managed by Invesco, the QQQ ETF is an equity ETF that seeks to track the returns of the Nasdaq 100 index.
 * It is exchanged in the NASDAQ stock market, and its assets are mostly allocated on the technology sector (59.78%), with stocks of
 Apple (8.83%), NVIDIA(8.23%), Microsoft (7.67%), Amazon (5.36%), ane Meta (5.1%) among others.
 * It also holds assets on other sectors, like Consumer Discretionary (18.28%) and Healthcare (6.05%).
-* For ore information visit https://www.invesco.com/qqq-etf/en/about.html.'''
+* For more information visit https://www.invesco.com/qqq-etf/en/about.html.'''
 
 
 cadena5 = '''* Managed by SPDR (and by extension S&P), the SPDR Portfolio Emerging Markets ETF is an emerging markets equity ETF 
 that tracks the returns of the S&P Emerging BMI Index.
 * Its exchanged in the NYSE ARCA and its holdings include stocks from companies like
 Taiwan Semiconductor Manufacturing (8.6%), Tencent Holdings (3.51%) and Alibaba(1.86%).
-* For ore information visit https://www.ssga.com/us/en/intermediary/etfs/spdr-portfolio-emerging-markets-etf-spem.'''
+* For more information visit https://www.ssga.com/us/en/intermediary/etfs/spdr-portfolio-emerging-markets-etf-spem.'''
 
-@st.cache_data
 descriptions = [cadena1, cadena2, cadena3, cadena4, cadena5]
 
 @st.cache_data
