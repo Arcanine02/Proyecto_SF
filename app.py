@@ -313,8 +313,7 @@ def efficient_frontier():
      'targetrets' : around(100*targetrets,2),
      'targetvols': around(100*targetvols,2),
      'targetsharpe': around(targetrets/targetvols,2),
-     'weights': weights_list
- })
+     'weights': weights_list})
  return epfort
  
 epfort = efficient_frontier()
