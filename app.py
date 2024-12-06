@@ -518,18 +518,18 @@ with tab2:
  selected_portfolio = st.selectbox("Select a portfolio to analyze:", markowitz_ports)
  st.write("Weights of the assets in the portfolio")
  col_w1, col_w2, col_w3, col_w4, col_w5 = st.columns(5)
- col_w1.metric(tickers[0], f"{100*test_df.loc[tickers[0],selected_asset]:.2%}")
- col_w2.metric(tickers[1], f"{100*test_df.loc[tickers[1],selected_asset]:.2%}")
- col_w3.metric(tickers[2], f"{100*test_df.loc[tickers[2],selected_asset]:.2%}")
- col_w4.metric(tickers[3], f"{100*test_df.loc[tickers[3],selected_asset]:.2%}")
- col_w5.metric(tickers[4], f"{100*test_df.loc[tickers[4],selected_asset]:.2%}")
+ col_w1.metric(tickers[0], f"{100*test_df.loc[tickers[0],selected_portfolio]:.2%}")
+ col_w2.metric(tickers[1], f"{100*test_df.loc[tickers[1],selected_portfolio]:.2%}")
+ col_w3.metric(tickers[2], f"{100*test_df.loc[tickers[2],selected_portfolio]:.2%}")
+ col_w4.metric(tickers[3], f"{100*test_df.loc[tickers[3],selected_portfolio]:.2%}")
+ col_w5.metric(tickers[4], f"{100*test_df.loc[tickers[4],selected_portfolio]:.2%}")
  
  st.subheader("2010-2020 Portfolio Construction")
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1, col_m2, col_m3 = st.columns(3)
- col_m1.metric("Mean", f"{100*test_df.loc["Returns",selected_asset]:.2%}")
- col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_asset]:.2f}")
- col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_asset]:.2f}")
+ col_m1.metric("Mean", f"{100*test_df.loc["Returns",selected_portfolio]:.2%}")
+ col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.2f}")
+ col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port1 = go.Figure()
@@ -558,9 +558,9 @@ with tab2:
 
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1b, col_m2b, col_m3b = st.columns(3)
- col_m1b.metric("Mean", f"{100*test_df.loc["Returns",selected_asset]:.2%}")
- col_m2b.metric("Volatility", f"{test_df.loc["Volatility",selected_asset]:.2f}")
- col_m3b.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_asset]:.2f}")
+ col_m1b.metric("Mean", f"{100*test_df.loc["Returns",selected_portfolio]:.2%}")
+ col_m2b.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.2f}")
+ col_m3b.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_asset = go.Figure()
