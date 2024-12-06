@@ -314,9 +314,10 @@ def efficient_frontier():
      'targetvols': around(100*targetvols,2),
      'targetsharpe': around(targetrets/targetvols,2),
      'weights': weights_list})
- return epfort
  
-epfort = efficient_frontier()
+ return efport
+ 
+efport = efficient_frontier()
 
 # Extracting weights and stats for the 10% return portfolio
 ret_10_port_wts = list(zip(tickers, around(100*efport.iloc[0,3],2)))
