@@ -692,3 +692,90 @@ with tab2:
 with tab3:
  
  st.header("Black-Litterman Portfolio Analysis")
+ 
+ st.write("Weights of the assets in the portfolio")
+ col_wb1, col_wb2, col_wb3 col_wb4, col_wb5 = st.columns(3)
+ col_wb1.metric(tickers[0], f"{0.01*test_df.loc[tickers[0],"Black-Litterman"]:.2%}")
+ col_wb2.metric(tickers[1], f"{0.01*test_df.loc[tickers[1],"Black-Litterman"]:.2%}")
+ col_wb3.metric(tickers[2], f"{0.01*test_df.loc[tickers[2],"Black-Litterman"]:.2%}")
+
+
+ col_wb4, col_wb5, col_wb6 = st.columns(3)
+ col_wb4.metric(tickers[3], f"{0.01*test_df.loc[tickers[3],"Black-Litterman"]:.2%}")
+ col_wb5.metric(tickers[4], f"{0.01*test_df.loc[tickers[4],"Black-Litterman"]:.2%}")
+ col_wb6.metric("Risk-Free", f"{(1 - 0.01*test_df.loc[tickers[0:5],"Black-Litterman"].sum()):.2%}")
+ 
+ st.subheader("2010-2020 Portfolio Construction")
+ st.write("Statistics of the selected portfolio's daily returns")
+ col_mb1, col_mb2, col_mb3 = st.columns(3)
+ col_mb1.metric("Mean", f"{test_df.loc["Returns","Black-Litterman"]:.2%}")
+ col_mb2.metric("Volatility", f"{test_df.loc["Volatility","Black-Litterman"]:.2f}")
+ col_mb3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio","Black-Litterman"]:.2f}")
+
+ # Plotting the portfolio vs S&P 500 benchmark
+ fig_port1_bl = go.Figure()
+
+ fig_port1_bl.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre["Black-Litterman"], name = "Black-Litterman"))
+ fig_port1_bl.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
+  
+ fig_port1_bl.update_layout(
+     title=f'Normalized Prices: Black-Litterman vs S&P 500 (Base 100)',
+     xaxis_title='Date',
+     yaxis_title='Normalized Price')
+
+ st.plotly_chart(fig_port1_bl, use_container_width=True, key="price_normalized_port_bl")
+ 
+ # Histogram for VaR and cVaR
+ hist_returns_port_bl = port_returns_final_pre["Black-Litterman"]
+ hist_fig_port_bl = crear_histograma_distribucion(hist_returns_port_bl,
+                                          np.quantile(hist_returns_port_bl,0.05) , 
+                                          calcular_cvar(hist_returns_port_bl,0.95), 
+                                          f"Daily returns of {"Black-Litterman"} between 2010 and 2020")
+ 
+ st.plotly_chart(hist_fig_port_bl, use_container_width=True, key="returns_hist_port_bl")
+
+ 
+ st.subheader("2021-2023 backtesting")
+
+ st.write("Statistics of the selected portfolio's daily returns")
+ col_m1bl, col_m2bl, col_m3bl = st.columns(3)
+ col_m1bl.metric("Mean", f"{backtest_summary_df.loc["mean","Black-Litterman"]:.2%}")
+ col_m2bl.metric("Volatility", f"{backtest_summary_df.loc["sd","Black-Litterman"]:.2f}")
+ col_m3bl.metric("Skew", f"{backtest_summary_df.loc["skew","Black-Litterman"]:.2f}")
+ 
+ col_m4bl, col_m5bl, col_m6bl = st.columns(3)
+ col_m4bl.metric("Kurtosis", f"{backtest_summary_df.loc["kurtosis","Black-Litterman"]:.2f}")
+ col_m5bl.metric("VaR 95%", f"{backtest_summary_df.loc["VaR 95%","Black-Litterman"]:.2%}")
+ col_m6bl.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%","Black-Litterman"]:.2%}")
+ 
+ col_m7bl, col_m8bl, col_m9bl = st.columns(3)
+ col_m7bl.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio","Black-Litterman"]:.2f}")
+ col_m8bl.metric("Sortino Ratio", f"{backtest_summary_df.loc["sortino ratio","Black-Litterman"]:.2f}")
+ col_m9bl.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon","Black-Litterman"]:.2f}")
+ 
+ col_m10bl, col_m11bl, col_m12bl = st.columns(3)
+ col_m10bl.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns","Black-Litterman"]:.2%}")
+ col_m11bl.metric("2023 Returns", f"{backtest_summary_df.loc["2023 annual returns","Black-Litterman"]:.2%}")
+ col_m12bl.metric("Total Cumulative Returns", f"{backtest_summary_df.loc["total returns","Black-Litterman"]:.2%}")
+
+ # Plotting the portfolio vs S&P 500 benchmark
+ fig_port2_bl = go.Figure()
+
+ fig_port2_bl.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post["Black-Litterman"], name = "Black-Litterman"))
+ fig_port2_bl.add_trace(go.Scatter(x=df_final_post.index, y=df_final_post['S&P 500'], name='S&P 500'))
+  
+ fig_port2_bl.update_layout(
+     title=f'Normalized Prices: Black-Litterman vs S&P 500 (Base 100)',
+     xaxis_title='Date',
+     yaxis_title='Normalized Price')
+
+ st.plotly_chart(fig_port2_bl, use_container_width=True, key="price_normalized_port_2_bl")
+ 
+ # Histogram for VaR and cVaR
+ hist_returns_port_2_bl = port_returns_final_post["Black-Litterman"]
+ hist_fig_port_2_bl = crear_histograma_distribucion(hist_returns_port_2_bl,
+                                          np.quantile(hist_returns_port_2_bl,0.05) , 
+                                          calcular_cvar(hist_returns_port_2_bl,0.95), 
+                                          f"Daily returns of {"Black-Litterman"} between 2021 and 2023")
+ 
+ st.plotly_chart(hist_fig_port_2_bl, use_container_width=True, key="returns_hist_port_2_bl")
