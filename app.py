@@ -564,17 +564,17 @@ with tab2:
  col_m3b.metric("Skew", f"{backtest_summary_df.loc["skew",selected_portfolio]:.2f}")
  
  col_m4b, col_m5b, col_m6b = st.columns(3)
- col_m4b.metric("Kurtosis", f"{backtest_summary_df.loc["kurtosis",selected_portfolio]:.2%}")
- col_m5b.metric("VaR 95%", f"{backtest_summary_df.loc["VaR 95%",selected_portfolio]:.2f}")
- col_m6b.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%",selected_portfolio]:.2f}")
+ col_m4b.metric("Kurtosis", f"{backtest_summary_df.loc["kurtosis",selected_portfolio]:.2f}")
+ col_m5b.metric("VaR 95%", f"{backtest_summary_df.loc["VaR 95%",selected_portfolio]:.2%}")
+ col_m6b.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%",selected_portfolio]:.2%}")
  
  col_m7b, col_m8b, col_m9b = st.columns(3)
- col_m7b.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio",selected_portfolio]:.2%}")
+ col_m7b.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio",selected_portfolio]:.2f}")
  col_m8b.metric("VSorino Ratio", f"{backtest_summary_df.loc["sortino ratio",selected_portfolio]:.2f}")
  col_m9b.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon	",selected_portfolio]:.2f}")
  
  col_m10b, col_m11b, col_m12b = st.columns(3)
- col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns	",selected_portfolio]:.2%}")
+ col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns	",selected_portfolio]:.2f}")
  col_m11b.metric("2023 Returns", f"{backtest_summary_df.loc["2023 annual returns	",selected_portfolio]:.2f}")
  col_m12b.metric("Total Cumulative Returns", f"{backtest_summary_df.loc["total returns",selected_portfolio]:.2f}")
 
