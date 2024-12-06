@@ -535,8 +535,8 @@ with tab2:
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port1 = go.Figure()
 
- fig_port1.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post[selected_portfolio], name = selected_portfolio))
- fig_port1.add_trace(go.Scatter(x=df_final_post.index, y=df_final_post['S&P 500'], name='S&P 500'))
+ fig_port1.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre[selected_portfolio], name = selected_portfolio))
+ fig_port1.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
   
  fig_port1.update_layout(
      title=f'Normalized Prices: {selected_portfolio} vs S&P 500 (Base 100)',
@@ -581,8 +581,8 @@ with tab2:
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port2 = go.Figure()
 
- fig_port2.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre[selected_portfolio], name = selected_portfolio))
- fig_port2.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
+ fig_port2.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post[selected_portfolio], name = selected_portfolio))
+ fig_port2.add_trace(go.Scatter(x=df_final_post.index, y=df_final_post['S&P 500'], name='S&P 500'))
   
  fig_port2.update_layout(
      title=f'Normalized Prices: {selected_portfolio} vs S&P 500 (Base 100)',
@@ -593,12 +593,12 @@ with tab2:
  
  # Histogram for VaR and cVaR
  hist_returns_port_2 = port_returns_final_post[selected_portfolio]
- hist_fig_port_2 = crear_histograma_distribucion(hist_returns_port,
-                                          np.quantile(hist_returns_port,0.05) , 
-                                          calcular_cvar(hist_returns_port,0.95), 
+ hist_fig_port_2 = crear_histograma_distribucion(hist_returns_port_2,
+                                          np.quantile(hist_returns_port_2,0.05) , 
+                                          calcular_cvar(hist_returns_port_2,0.95), 
                                           f"Daily returns of {selected_portfolio} between 2021 and 2023")
  
- st.plotly_chart(hist_fig_port, use_container_width=True, key="returns_hist_port_2")
+ st.plotly_chart(hist_fig_port_2, use_container_width=True, key="returns_hist_port_2")
 
 with tab3:
  
