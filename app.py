@@ -32,12 +32,45 @@ n = len(tickers)
 
 # Info about the assets
 cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
- * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
-* Its main components are:
+* It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
+* Its main assets are allocated on:
  United States Treasury (44.23%),
  Federal National Mortgage Association I (11.04%) And II (6.05%),
  Federal Home Loan Mortgage Corporation (5.57%),
- and Uniform MBS (1.54%).'''
+ and Uniform MBS (1.54%).
+ * For ore information visit https://www.ishares.com/us/products/239458/ishares-core-total-us-bond-market-etf.'''
+
+cadena2 = ''' * Managed by BlackRock, the iShares J.P. Morgan USD Emerging Markets Bond ETF is (as given by its name) an Emerging Markets Bond ETF 
+that exchanged in NASDAQ seeks to track the investment results of an index composed of U.S. dollar-denominated, emerging market bonds.
+* Its benchmark index is the J.P. Morgan EMBI Global Core Index.
+* This ETF is mostly formed by sovereign assets (85%) from over 30 countries such as Saudi Arabia (5.85%), Mexico (5.67%), 
+Turkey (4.92%), United Arab Emirates (4.68%), Indonesia (4.67%).
+* For ore information visit https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf.'''
+
+
+cadena3 = ''' * Managed by SPDR (and by extension S&P), the SPDR Gold Shares (NYSEArca) ETF seeks to track the returns of the gold asset.
+* It is a relatively low priced ETF and is the largest physically backed gold ETF in the world.
+* For ore information visit https://www.spdrgoldshares.com/.'''
+
+
+cadena4 = ''' * Managed by Invesco, the QQQ ETF is an equity ETF that seeks to track the returns of the Nasdaq 100 index.
+* It is exchanged in the NASDAQ stock market, and its assets are mostly allocated on the technology sector (59.78%), with stocks of
+Apple (8.83%), NVIDIA(8.23%), Microsoft (7.67%), Amazon (5.36%), ane Meta (5.1%) among others.
+* It also holds assets on other sectors, like Consumer Discretionary (18.28%) and Healthcare (6.05%).
+* For ore information visit https://www.invesco.com/qqq-etf/en/about.html.'''
+
+
+cadena5 = '''* Managed by SPDR (and by extension S&P), the SPDR Portfolio Emerging Markets ETF is an emerging markets equity ETF 
+that tracks the returns of the S&P Emerging BMI Index.
+* Its exchanged in the NYSE ARCA and its holdings include stocks from companies like
+Taiwan Semiconductor Manufacturing (8.6%), Tencent Holdings (3.51%) and Alibaba(1.86%).
+* For ore information visit https://www.ssga.com/us/en/intermediary/etfs/spdr-portfolio-emerging-markets-etf-spem.'''
+
+
+descriptions = [cadena1, cadena2, cadena3, cadena4, cadena5]
+
+descriptions_dict = zip(tickers, descriptions)
+descriptions_dict = dict(descriptions_dict)
 
 # function to download data from yahoofinance
 def download_data(assets, start_date, end_date):
@@ -324,7 +357,7 @@ with tab1:
   st.write("Every asset in this dashboard is expressed in mexican pesos.")
   selected_asset = st.selectbox("Select an asset to analyze:", tickers)
 
-  st.write(cadena1)
+  st.write(descriptions_dict[selected_asset])
 
   st.write(f"Daily Summary Statistics for the returns of the {selected_asset} ETF between 2010 and 2020.")
   
