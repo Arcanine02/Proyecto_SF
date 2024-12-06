@@ -244,7 +244,8 @@ def portfolio_stats(weights):
 @st.cache_data
 def neg_sharpe_ratio(weights):
     return -portfolio_stats(weights)[2]
-
+ 
+@ st.cache_data
 def max_sharpe_portfolio():
 
  # Specify constraints and bounds
@@ -326,6 +327,7 @@ ret_10_port_stats = list(zip(stats, around(portfolio_stats(efport.iloc[0,3]),4))
 
 # Backtesting
 # S&P500 en pesos
+@ st.cache_data
 def sp_pesos():
  spx = download_data("^GSPC", "2021-01-01", fin)
  
