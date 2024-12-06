@@ -160,7 +160,37 @@ df_mxn = df.mul(mxn, axis = 0)
 returns = df_mxn.pct_change().dropna()
 returns_test = returns.loc["2010-01-01":"2020-12-31"]
 # Summary statistics
+# risk free rate: 1 year treasuries. 4.297, updates december 2nd 2024.
+rf = 0.04297
 
+# Expected shortfall function
+@st.cache_data
+def calcular_cvar(x, alpha):
+ VaR = np.quantile(x,1-alpha)
+ cVaR = x[x.lt(VaR)].mean()
+ return(cVaR)
+
+# sharpe ratio function
+@st.cache_data
+def sharpe_ratio(x, rf):
+ dif = x-rf
+ return(dif.mean()/dif.std())
+
+# sortino ratio function
+@st.cache_data
+def sortino_ratio(x, rf):
+ dif = x-rf
+ return(dif.mean()/dif[dif<0].std())
+
+# max drawdon 
+@st.cache_data
+def drawdon(x):
+ cum_returns = (1+x).cumprod()
+ max_cum_return = cum_returns.cummax()
+ drawdown = (max_cum_return - cum_returns)/max_cum_return
+ max_drawdown = drawdown.max()
+ return(max_drawdown)
+  
 @st.cache_data
 def assets_stats():
  means = returns_test.mean()
@@ -168,60 +198,19 @@ def assets_stats():
  skews = returns_test.skew()
  kurtosis_excess = returns_test.kurtosis()
  VaRs = returns_test.quantile(0.05)
- 
- # Expected shortfall function
- @st.cache_data
- def calcular_cvar(x, alpha):
-   VaR = np.quantile(x,1-alpha)
-   cVaR = x[x.lt(VaR)].mean()
-   return(cVaR)
- 
- 
  cVaRs = returns_test.apply(calcular_cvar,args = (0.95,),axis=0)
- 
- 
- # risk free rate: 1 year treasuries. 4.297, updates december 2nd 2024.
- rf = 0.04297
- 
- # sharpe ratio function
- @st.cache_data
- def sharpe_ratio(x, rf):
-   dif = x-rf
-   return(dif.mean()/dif.std())
- 
  sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
- 
- # sortino ratio function
- @st.cache_data
- def sortino_ratio(x, rf):
-   dif = x-rf
-   return(dif.mean()/dif[dif<0].std())
- 
  sortinos = returns_test.apply(sortino_ratio, args = (rf/252,), axis = 0)
- 
- # max drawdon 
- @st.cache_data
- def drawdon(x):
-   cum_returns = (1+x).cumprod()
-   max_cum_return = cum_returns.cummax()
-   drawdown = (max_cum_return - cum_returns)/max_cum_return
-   max_drawdown = drawdown.max()
-   return(max_drawdown)
- 
- 
  drawdowns = returns_test.apply(drawdon, axis=0)
  
  # joining all summary statistics in a dataframe
- 
  summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,sortinos,drawdowns],
                            index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 'sharpe ratio','sortino ratio','max drawdon'])
  return summary_df
 
 summary_df = assets_stats()
-rf = 0.04297
 
 # Markowitz
-
 # initial weights for every asset: equal weights.
 initial_wts = (np.ones(n)/n)[:,newaxis]
 
