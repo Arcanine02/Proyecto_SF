@@ -284,7 +284,6 @@ for tr in targetrets:
 
 targetvols = array(tvols)
 # Dataframe for EF
-@st.cache_data
 efport = pd.DataFrame({
     'targetrets' : around(100*targetrets,2),
     'targetvols': around(100*targetvols,2),
