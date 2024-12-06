@@ -447,7 +447,7 @@ with tab1:
       yaxis_title='Normalized Price')
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
-
+ 
  # Histogram for VaR and cVaR
  hist_returns = returns_test[selected_asset]
  st.plotly_chart(crear_histograma_distribucion(hist_returns,
