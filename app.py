@@ -574,9 +574,9 @@ with tab2:
  col_m9b.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon	",selected_portfolio]:.2f}")
  
  col_m10b, col_m11b, col_m12b = st.columns(3)
- col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns	",selected_portfolio]:.2f}")
- col_m11b.metric("2023 Returns", f"{backtest_summary_df.loc["2023 annual returns	",selected_portfolio]:.2f}")
- col_m12b.metric("Total Cumulative Returns", f"{backtest_summary_df.loc["total returns",selected_portfolio]:.2f}")
+ col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns	",selected_portfolio]:.2%}")
+ col_m11b.metric("2023 Returns", f"{backtest_summary_df.loc["2023 annual returns	",selected_portfolio]:.2%}")
+ col_m12b.metric("Total Cumulative Returns", f"{backtest_summary_df.loc["total returns",selected_portfolio]:.2%}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port2 = go.Figure()
