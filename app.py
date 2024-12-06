@@ -448,13 +448,13 @@ with tab1:
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
  
- # Histogram for VaR and cVaR
- hist_returns = returns_test[selected_asset]
- st.plotly_chart(crear_histograma_distribucion(hist_returns,
-                                               np.quantile(hist_returns,0.05) , 
-                                               calcular_cvar(hist_returns,0.95), 
-                                               f"Daily returns of {selected_asset} between 2010 and 2020"),
-                use_container_width=True, key="hist_asset")
+  # Histogram for VaR and cVaR
+  hist_returns = returns_test[selected_asset]
+  st.plotly_chart(crear_histograma_distribucion(hist_returns,
+                                                np.quantile(hist_returns,0.05) , 
+                                                calcular_cvar(hist_returns,0.95), 
+                                                f"Daily returns of {selected_asset} between 2010 and 2020"),
+                 use_container_width=True, key="hist_asset")
 
 with tab2:
   st.header("Optimal Portfolios")
