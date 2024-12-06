@@ -162,7 +162,6 @@ kurtosis_excess = returns_test.kurtosis()
 VaRs = returns_test.quantile(0.05)
 
 # Expected shortfall function
-@st.cache_data
 def calcular_cvar(x, alpha):
   VaR = np.quantile(x,1-alpha)
   cVaR = x[x.lt(VaR)].mean()
@@ -176,7 +175,6 @@ cVaRs = returns_test.apply(calcular_cvar,args = (0.95,),axis=0)
 rf = 0.04297
 
 # sharpe ratio function
-@st.cache_data
 def sharpe_ratio(x, rf):
   dif = x-rf
   return(dif.mean()/dif.std())
@@ -184,7 +182,6 @@ def sharpe_ratio(x, rf):
 sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
 
 # sortino ratio function
-@st.cache_data
 def sortino_ratio(x, rf):
   dif = x-rf
   return(dif.mean()/dif[dif<0].std())
@@ -192,7 +189,6 @@ def sortino_ratio(x, rf):
 sortinos = returns_test.apply(sortino_ratio, args = (rf/252,), axis = 0)
 
 # max drawdon 
-@st.cache_data
 def drawdon(x):
   cum_returns = (1+x).cumprod()
   max_cum_return = cum_returns.cummax()
@@ -245,7 +241,6 @@ stats = ['Returns', 'Volatility', 'Sharpe Ratio']
 max_sharpe_port_stats = list(zip(stats, around(portfolio_stats(max_sharpe_port['x']),4)))
 
 # Minimum Volatility Portfolio
-@st.cache_data
 def min_volatility(weights):
     return portfolio_stats(weights)[1]
 
@@ -263,7 +258,6 @@ min_vol_port_stats = list(zip(stats, around(portfolio_stats(min_vol_port['x']),4
 
 # Efficient Frontier
 # Minimize the volatility
-@st.cache_data
 def min_volatility(weights):
     return portfolio_stats(weights)[1]
 
