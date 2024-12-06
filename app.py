@@ -425,7 +425,7 @@ port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
 port_prices_final_pre = port_prices_final["2010-01-01":"2020-12-31"]
 port_prices_final_post = port_prices_final["2021-01-01":"2023-12-31"]
 port_returns_final = port_prices_final.pct_change().dropna()
-port_returns_final = port_returns_final.replace([np.inf, -np.inf],np.nan).dropna()
+port_returns_final = port_returns_final.replace([np.inf, -np.inf,-1],np.nan).dropna()
 port_returns_final_pre = port_returns_final["2010-01-01":"2020-12-31"]
 port_returns_final_post = port_returns_final["2021-01-01":"2023-12-31"]
 
