@@ -281,6 +281,8 @@ def min_vol_portfolio():
  min_vol_port = sco.minimize(min_volatility, initial_wts_min_vol, method = 'SLSQP', 
                              bounds = bnds_min_vol, constraints = cons_min_vol)
  return min_vol_port
+
+min_vol_port = min_vol_portfolio()
  
 # Portfolio weights
 min_vol_port_wts = list(zip(tickers, around(min_vol_port['x']*100,2)))
