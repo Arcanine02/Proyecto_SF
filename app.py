@@ -694,7 +694,7 @@ with tab3:
  st.header("Black-Litterman Portfolio Analysis")
  
  st.write("Weights of the assets in the portfolio")
- col_wb1, col_wb2, col_wb3 col_wb4, col_wb5 = st.columns(3)
+ col_wb1, col_wb2, col_wb3 = st.columns(3)
  col_wb1.metric(tickers[0], f"{0.01*test_df.loc[tickers[0],"Black-Litterman"]:.2%}")
  col_wb2.metric(tickers[1], f"{0.01*test_df.loc[tickers[1],"Black-Litterman"]:.2%}")
  col_wb3.metric(tickers[2], f"{0.01*test_df.loc[tickers[2],"Black-Litterman"]:.2%}")
