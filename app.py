@@ -300,6 +300,7 @@ def efficient_frontier():
  
  for tr in targetrets:
   initial_wts_min_vol = np.ones(n)/n
+  bnds_min_vol = tuple((0, 1) for x in range(n))
   ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
                 {'type': 'eq', 'fun': lambda x: sum(x) - 1})
   opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
