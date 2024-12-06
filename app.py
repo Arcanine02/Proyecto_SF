@@ -68,9 +68,8 @@ Taiwan Semiconductor Manufacturing (8.6%), Tencent Holdings (3.51%) and Alibaba(
 
 descriptions = [cadena1, cadena2, cadena3, cadena4, cadena5]
 
-@st.cache_data
+
 descriptions_dict = zip(tickers, descriptions)
-@st.cache_data
 descriptions_dict = dict(descriptions_dict)
 
 # function to download data from yahoofinance
@@ -143,36 +142,23 @@ inicio = "2010-01-01"
 fin = "2023-12-31"
 
 # download assets and USD/MXN info
-@st.cache_data
 df = download_data(tickers, inicio, fin)
-@st.cache_data
 mxn = download_data("MXN=X", inicio, fin)
 
 # calculating assets prices in mexican pesos
-@st.cache_data
 mxn = df.join(mxn)
-@st.cache_data
 df = mxn.drop(columns = ['MXN=X'])
-@st.cache_data
 mxn = mxn['MXN=X']
-@st.cache_data
 df_mxn = df.mul(mxn, axis = 0)
 
 # Daily returns:
-@st.cache_data
 returns = df_mxn.pct_change().dropna()
-@st.cache_data
 returns_test = returns.loc["2010-01-01":"2020-12-31"]
 # Summary statistics
-@st.cache_data
 means = returns_test.mean()
-@st.cache_data
 sds = returns_test.std()
-@st.cache_data
 skews = returns_test.skew()
-@st.cache_data
 kurtosis_excess = returns_test.kurtosis()
-@st.cache_data
 VaRs = returns_test.quantile(0.05)
 
 # Expected shortfall function
@@ -182,7 +168,7 @@ def calcular_cvar(x, alpha):
   cVaR = x[x.lt(VaR)].mean()
   return(cVaR)
 
-@st.cache_data
+
 cVaRs = returns_test.apply(calcular_cvar,args = (0.95,),axis=0)
 
 
@@ -194,7 +180,7 @@ rf = 0.04297
 def sharpe_ratio(x, rf):
   dif = x-rf
   return(dif.mean()/dif.std())
-@st.cache_data
+
 sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
 
 # sortino ratio function
@@ -202,7 +188,7 @@ sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
 def sortino_ratio(x, rf):
   dif = x-rf
   return(dif.mean()/dif[dif<0].std())
-@st.cache_data
+
 sortinos = returns_test.apply(sortino_ratio, args = (rf/252,), axis = 0)
 
 # max drawdon 
@@ -214,11 +200,11 @@ def drawdon(x):
   max_drawdown = drawdown.max()
   return(max_drawdown)
 
-@st.cache_data
+
 drawdowns = returns_test.apply(drawdon, axis=0)
 
 # joining all summary statistics in a dataframe
-@st.cache_data
+
 summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,sortinos,drawdowns],
                           index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 'sharpe ratio','sortino ratio','max drawdon'])
 
@@ -287,12 +273,12 @@ def min_volatility(weights):
 targetrets = linspace(0.1,0.60,100)
 tvols = []
 weights_list = []
-@st.cache_data
+
 for tr in targetrets:
 
     ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
                {'type': 'eq', 'fun': lambda x: sum(x) - 1})
-    @st.cache_data
+
     opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
 
     tvols.append(opt_ef['fun'])
@@ -314,13 +300,13 @@ ret_10_port_stats = list(zip(stats, around(portfolio_stats(efport.iloc[0,3]),4))
 
 # Backtesting
 # S&P500 en pesos
-@st.cache_data
+
 spx = download_data("^GSPC", "2021-01-01", fin)
 
 # calculating assets prices in mexican pesos
 spx = spx.join(df)
 spx = spx['^GSPC']
-@st.cache_data
+
 spx_mxn = spx.mul(mxn, axis = 0)["2021-1-01":"2023-12-31"]
 
 # All portfolios and benchmark dataframe
@@ -357,9 +343,9 @@ Q = array([[0.1],[-0.08],[0.05],[0.2],[0.1]])
 omega = np.diag(diag(P@prior_cov@P.T))
 
 # Posterior distribution and weights
-@st.cache_data
+
 posterior_mean = np.linalg.inv(np.linalg.inv(prior_cov)+P.T@np.linalg.inv(omega)@P)@(np.linalg.inv(prior_cov)@prior_mean+P.T@np.linalg.inv(omega)@Q)
-@st.cache_data
+
 bl_port_wts = (((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean)/100
 
 
@@ -388,7 +374,7 @@ min_vol_prices = backtest_prices.multiply(test_df.iloc[0:5,1]/100, axis = 1).sum
 ret_10_prices = backtest_prices.multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
 equal_wts_prices = backtest_prices.multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
 bl_prices = backtest_prices.multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
-@st.cache_data
+
 backtest_port_prices = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices,
                         "Min Volatility": min_vol_prices,
                         "10% Returns": ret_10_prices,
@@ -430,7 +416,7 @@ backtest_summary_df.index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%',
 
 # Asset Visualization df
 # S&P500 en pesos
-@st.cache_data
+
 spx_all = download_data("^GSPC", inicio, fin)
 # calculating assets prices in mexican pesos
 spx_all = spx_all.join(df_mxn)
