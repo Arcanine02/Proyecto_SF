@@ -564,7 +564,7 @@ with tab2:
  col_m3b.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
- fig_asset = go.Figure()
+ fig_port2 = go.Figure()
 
  fig_port2.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre[selected_portfolio], name = selected_portfolio))
  fig_port2.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
