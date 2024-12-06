@@ -715,7 +715,7 @@ with tab3:
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port1_bl = go.Figure()
 
- fig_port1_bl.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre["Black-Litterman"], name = "Black-Litterman"))
+ fig_port1_bl.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre["Black-litterman"], name = "Black-Litterman"))
  fig_port1_bl.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
   
  fig_port1_bl.update_layout(
@@ -726,17 +726,16 @@ with tab3:
  st.plotly_chart(fig_port1_bl, use_container_width=True, key="price_normalized_port_bl")
  
  # Histogram for VaR and cVaR
- hist_returns_port_bl = port_returns_final_pre["Black-Litterman"]
+ hist_returns_port_bl = port_returns_final_pre["Black-litterman"]
  hist_fig_port_bl = crear_histograma_distribucion(hist_returns_port_bl,
                                           np.quantile(hist_returns_port_bl,0.05) , 
                                           calcular_cvar(hist_returns_port_bl,0.95), 
-                                          f"Daily returns of {"Black-Litterman"} between 2010 and 2020")
+                                          f"Daily returns of {"Black-litterman"} between 2010 and 2020")
  
  st.plotly_chart(hist_fig_port_bl, use_container_width=True, key="returns_hist_port_bl")
 
  
  st.subheader("2021-2023 backtesting")
-
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1bl, col_m2bl, col_m3bl = st.columns(3)
  col_m1bl.metric("Mean", f"{backtest_summary_df.loc["mean","Black-Litterman"]:.2%}")
