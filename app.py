@@ -30,47 +30,52 @@ tickers = list(sort(tickers))
 # number of assets in portfolio
 n = len(tickers)
 
-# Info about the assets
-cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
-* It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
-* Its main assets are allocated on:
- United States Treasury (44.23%),
- Federal National Mortgage Association I (11.04%) And II (6.05%),
- Federal Home Loan Mortgage Corporation (5.57%),
- and Uniform MBS (1.54%).
- * For more information visit https://www.ishares.com/us/products/239458/ishares-core-total-us-bond-market-etf.'''
+@ st.cache_data
+def asset_info():
+ # Info about the assets
+ cadena1 = ''' * Managed by BlackRock, the iShares Core U.S. Aggregate Bond ETF (AGG) is a U.S. fixed income ETF.
+ * It seeks to track the investment results of an index composed of the total U.S. investment-grade bond market and its price is expressed in USD.
+ * Its main assets are allocated on:
+  United States Treasury (44.23%),
+  Federal National Mortgage Association I (11.04%) And II (6.05%),
+  Federal Home Loan Mortgage Corporation (5.57%),
+  and Uniform MBS (1.54%).
+  * For more information visit https://www.ishares.com/us/products/239458/ishares-core-total-us-bond-market-etf.'''
+ 
+ cadena2 = ''' * Managed by BlackRock, the iShares J.P. Morgan USD Emerging Markets Bond ETF is (as given by its name) an Emerging Markets Bond ETF 
+ that exchanged in NASDAQ seeks to track the investment results of an index composed of U.S. dollar-denominated, emerging market bonds.
+ * Its benchmark index is the J.P. Morgan EMBI Global Core Index.
+ * This ETF is mostly formed by sovereign assets (85%) from over 30 countries such as Saudi Arabia (5.85%), Mexico (5.67%), 
+ Turkey (4.92%), United Arab Emirates (4.68%), Indonesia (4.67%).
+ * For more information visit https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf.'''
+ 
+ 
+ cadena3 = ''' * Managed by SPDR (and by extension S&P), the SPDR Gold Shares (NYSEArca) ETF seeks to track the returns of the gold asset.
+ * It is a relatively low priced ETF and is the largest physically backed gold ETF in the world.
+ * For more information visit https://www.spdrgoldshares.com/.'''
+ 
+ 
+ cadena4 = ''' * Managed by Invesco, the QQQ ETF is an equity ETF that seeks to track the returns of the Nasdaq 100 index.
+ * It is exchanged in the NASDAQ stock market, and its assets are mostly allocated on the technology sector (59.78%), with stocks of
+ Apple (8.83%), NVIDIA(8.23%), Microsoft (7.67%), Amazon (5.36%), ane Meta (5.1%) among others.
+ * It also holds assets on other sectors, like Consumer Discretionary (18.28%) and Healthcare (6.05%).
+ * For more information visit https://www.invesco.com/qqq-etf/en/about.html.'''
+ 
+ 
+ cadena5 = '''* Managed by SPDR (and by extension S&P), the SPDR Portfolio Emerging Markets ETF is an emerging markets equity ETF 
+ that tracks the returns of the S&P Emerging BMI Index.
+ * Its exchanged in the NYSE ARCA and its holdings include stocks from companies like
+ Taiwan Semiconductor Manufacturing (8.6%), Tencent Holdings (3.51%) and Alibaba(1.86%).
+ * For more information visit https://www.ssga.com/us/en/intermediary/etfs/spdr-portfolio-emerging-markets-etf-spem.'''
+ 
+ descriptions = [cadena1, cadena2, cadena3, cadena4, cadena5]
+ 
+ 
+ descriptions_dict = zip(tickers, descriptions)
+ descriptions_dict = dict(descriptions_dict)
+ return descriptions_dict
 
-cadena2 = ''' * Managed by BlackRock, the iShares J.P. Morgan USD Emerging Markets Bond ETF is (as given by its name) an Emerging Markets Bond ETF 
-that exchanged in NASDAQ seeks to track the investment results of an index composed of U.S. dollar-denominated, emerging market bonds.
-* Its benchmark index is the J.P. Morgan EMBI Global Core Index.
-* This ETF is mostly formed by sovereign assets (85%) from over 30 countries such as Saudi Arabia (5.85%), Mexico (5.67%), 
-Turkey (4.92%), United Arab Emirates (4.68%), Indonesia (4.67%).
-* For more information visit https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf.'''
-
-
-cadena3 = ''' * Managed by SPDR (and by extension S&P), the SPDR Gold Shares (NYSEArca) ETF seeks to track the returns of the gold asset.
-* It is a relatively low priced ETF and is the largest physically backed gold ETF in the world.
-* For more information visit https://www.spdrgoldshares.com/.'''
-
-
-cadena4 = ''' * Managed by Invesco, the QQQ ETF is an equity ETF that seeks to track the returns of the Nasdaq 100 index.
-* It is exchanged in the NASDAQ stock market, and its assets are mostly allocated on the technology sector (59.78%), with stocks of
-Apple (8.83%), NVIDIA(8.23%), Microsoft (7.67%), Amazon (5.36%), ane Meta (5.1%) among others.
-* It also holds assets on other sectors, like Consumer Discretionary (18.28%) and Healthcare (6.05%).
-* For more information visit https://www.invesco.com/qqq-etf/en/about.html.'''
-
-
-cadena5 = '''* Managed by SPDR (and by extension S&P), the SPDR Portfolio Emerging Markets ETF is an emerging markets equity ETF 
-that tracks the returns of the S&P Emerging BMI Index.
-* Its exchanged in the NYSE ARCA and its holdings include stocks from companies like
-Taiwan Semiconductor Manufacturing (8.6%), Tencent Holdings (3.51%) and Alibaba(1.86%).
-* For more information visit https://www.ssga.com/us/en/intermediary/etfs/spdr-portfolio-emerging-markets-etf-spem.'''
-
-descriptions = [cadena1, cadena2, cadena3, cadena4, cadena5]
-
-
-descriptions_dict = zip(tickers, descriptions)
-descriptions_dict = dict(descriptions_dict)
+descriptions_dict = asset_info()
 
 # function to download data from yahoofinance
 @st.cache_data
@@ -155,54 +160,65 @@ df_mxn = df.mul(mxn, axis = 0)
 returns = df_mxn.pct_change().dropna()
 returns_test = returns.loc["2010-01-01":"2020-12-31"]
 # Summary statistics
-means = returns_test.mean()
-sds = returns_test.std()
-skews = returns_test.skew()
-kurtosis_excess = returns_test.kurtosis()
-VaRs = returns_test.quantile(0.05)
 
-# Expected shortfall function
-def calcular_cvar(x, alpha):
-  VaR = np.quantile(x,1-alpha)
-  cVaR = x[x.lt(VaR)].mean()
-  return(cVaR)
+@st.cache_data
+def assets_stats():
+ means = returns_test.mean()
+ sds = returns_test.std()
+ skews = returns_test.skew()
+ kurtosis_excess = returns_test.kurtosis()
+ VaRs = returns_test.quantile(0.05)
+ 
+ # Expected shortfall function
+ @st.cache_data
+ def calcular_cvar(x, alpha):
+   VaR = np.quantile(x,1-alpha)
+   cVaR = x[x.lt(VaR)].mean()
+   return(cVaR)
+ 
+ 
+ cVaRs = returns_test.apply(calcular_cvar,args = (0.95,),axis=0)
+ 
+ 
+ # risk free rate: 1 year treasuries. 4.297, updates december 2nd 2024.
+ rf = 0.04297
+ 
+ # sharpe ratio function
+ @st.cache_data
+ def sharpe_ratio(x, rf):
+   dif = x-rf
+   return(dif.mean()/dif.std())
+ 
+ sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
+ 
+ # sortino ratio function
+ @st.cache_data
+ def sortino_ratio(x, rf):
+   dif = x-rf
+   return(dif.mean()/dif[dif<0].std())
+ 
+ sortinos = returns_test.apply(sortino_ratio, args = (rf/252,), axis = 0)
+ 
+ # max drawdon 
+ @st.cache_data
+ def drawdon(x):
+   cum_returns = (1+x).cumprod()
+   max_cum_return = cum_returns.cummax()
+   drawdown = (max_cum_return - cum_returns)/max_cum_return
+   max_drawdown = drawdown.max()
+   return(max_drawdown)
+ 
+ 
+ drawdowns = returns_test.apply(drawdon, axis=0)
+ 
+ # joining all summary statistics in a dataframe
+ 
+ summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,sortinos,drawdowns],
+                           index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 'sharpe ratio','sortino ratio','max drawdon'])
+ return summary_df
 
-
-cVaRs = returns_test.apply(calcular_cvar,args = (0.95,),axis=0)
-
-
-# risk free rate: 1 year treasuries. 4.297, updates december 2nd 2024.
+summary_df = assets_stats()
 rf = 0.04297
-
-# sharpe ratio function
-def sharpe_ratio(x, rf):
-  dif = x-rf
-  return(dif.mean()/dif.std())
-
-sharpes = returns_test.apply(sharpe_ratio, args = (rf/252,), axis = 0)
-
-# sortino ratio function
-def sortino_ratio(x, rf):
-  dif = x-rf
-  return(dif.mean()/dif[dif<0].std())
-
-sortinos = returns_test.apply(sortino_ratio, args = (rf/252,), axis = 0)
-
-# max drawdon 
-def drawdon(x):
-  cum_returns = (1+x).cumprod()
-  max_cum_return = cum_returns.cummax()
-  drawdown = (max_cum_return - cum_returns)/max_cum_return
-  max_drawdown = drawdown.max()
-  return(max_drawdown)
-
-
-drawdowns = returns_test.apply(drawdon, axis=0)
-
-# joining all summary statistics in a dataframe
-
-summary_df = pd.DataFrame([means,sds,skews,kurtosis_excess,VaRs,cVaRs,sharpes,sortinos,drawdowns],
-                          index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 'sharpe ratio','sortino ratio','max drawdon'])
 
 # Markowitz
 
@@ -224,16 +240,24 @@ def portfolio_stats(weights):
 
 # Max Sharpe Ratio Portfolio
 # Maximizing sharpe ratio by minimizing the negative sharpe ratio
+
 @st.cache_data
 def neg_sharpe_ratio(weights):
     return -portfolio_stats(weights)[2]
 
-# Specify constraints and bounds
-cons_max_sharpe = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
-bnds_max_sharpe = tuple((0, 1) for x in range(n))
-initial_wts_max_sharpe = np.ones(n)/n
-# Optimizing portfolio
-max_sharpe_port = sco.minimize(neg_sharpe_ratio, initial_wts_max_sharpe, method = 'SLSQP', bounds = bnds_max_sharpe, constraints = cons_max_sharpe)
+def max_sharpe_portfolio():
+
+ # Specify constraints and bounds
+ cons_max_sharpe = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
+ bnds_max_sharpe = tuple((0, 1) for x in range(n))
+ initial_wts_max_sharpe = np.ones(n)/n
+ # Optimizing portfolio
+ max_sharpe_port = sco.minimize(neg_sharpe_ratio, initial_wts_max_sharpe, method = 'SLSQP', 
+                                bounds = bnds_max_sharpe, constraints = cons_max_sharpe)
+ return max_sharpe_port
+
+max_sharpe_port = max_sharpe_portfolio()
+
 # Portfolio weights
 max_sharpe_port_wts = list(zip(tickers, around(max_sharpe_port['x']*100,2)))
 # Portfolio stats
@@ -241,16 +265,22 @@ stats = ['Returns', 'Volatility', 'Sharpe Ratio']
 max_sharpe_port_stats = list(zip(stats, around(portfolio_stats(max_sharpe_port['x']),4)))
 
 # Minimum Volatility Portfolio
+@st.cache_data
 def min_volatility(weights):
     return portfolio_stats(weights)[1]
 
 # Specify constraints and bounds
-cons_min_vol = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
-bnds_min_vol = tuple((0, 1) for x in range(n))
-initial_wts_min_vol = np.ones(n)/n
-# Optimizing portfolio
-min_vol_port = sco.minimize(min_volatility, initial_wts_min_vol, method = 'SLSQP', 
-                            bounds = bnds_min_vol, constraints = cons_min_vol)
+@st.cache_data
+def min_vol_portfolio():
+
+ cons_min_vol = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
+ bnds_min_vol = tuple((0, 1) for x in range(n))
+ initial_wts_min_vol = np.ones(n)/n
+ # Optimizing portfolio
+ min_vol_port = sco.minimize(min_volatility, initial_wts_min_vol, method = 'SLSQP', 
+                             bounds = bnds_min_vol, constraints = cons_min_vol)
+ return min_vol_port
+ 
 # Portfolio weights
 min_vol_port_wts = list(zip(tickers, around(min_vol_port['x']*100,2)))
 # Portfolio stats
@@ -258,32 +288,37 @@ min_vol_port_stats = list(zip(stats, around(portfolio_stats(min_vol_port['x']),4
 
 # Efficient Frontier
 # Minimize the volatility
-def min_volatility(weights):
-    return portfolio_stats(weights)[1]
+@st.cache_data
+def efficient_frontier():
+ # Efficient frontier params
+ targetrets = linspace(0.1,0.60,100)
+ tvols = []
+ weights_list = []
+ 
+ for tr in targetrets:
+ 
+     ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
+                {'type': 'eq', 'fun': lambda x: sum(x) - 1})
+ 
+     opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
+ 
+     tvols.append(opt_ef['fun'])
+     weights_list.append(opt_ef['x'])
+ 
+ targetvols = array(tvols)
+ # Dataframe for EF
+ efport = pd.DataFrame({
+     'targetrets' : around(100*targetrets,2),
+     'targetvols': around(100*targetvols,2),
+     'targetsharpe': around(targetrets/targetvols,2),
+     'weights': weights_list
+ })
+ 
+ 
+ return epfort
 
-# Efficient frontier params
-targetrets = linspace(0.1,0.60,100)
-tvols = []
-weights_list = []
 
-for tr in targetrets:
-
-    ef_cons = ({'type': 'eq', 'fun': lambda x: portfolio_stats(x)[0] - tr},
-               {'type': 'eq', 'fun': lambda x: sum(x) - 1})
-
-    opt_ef = sco.minimize(min_volatility, initial_wts_min_vol, method='SLSQP', bounds=bnds_min_vol, constraints=ef_cons)
-
-    tvols.append(opt_ef['fun'])
-    weights_list.append(opt_ef['x'])
-
-targetvols = array(tvols)
-# Dataframe for EF
-efport = pd.DataFrame({
-    'targetrets' : around(100*targetrets,2),
-    'targetvols': around(100*targetvols,2),
-    'targetsharpe': around(targetrets/targetvols,2),
-    'weights': weights_list
-})
+epfort = efficient_frontier()
 
 # Extracting weights and stats for the 10% return portfolio
 ret_10_port_wts = list(zip(tickers, around(100*efport.iloc[0,3],2)))
@@ -291,155 +326,203 @@ ret_10_port_stats = list(zip(stats, around(portfolio_stats(efport.iloc[0,3]),4))
 
 # Backtesting
 # S&P500 en pesos
+def sp_pesos():
+ spx = download_data("^GSPC", "2021-01-01", fin)
+ 
+ # calculating assets prices in mexican pesos
+ spx = spx.join(df)
+ spx = spx['^GSPC']
+ 
+ spx_mxn = spx.mul(mxn, axis = 0)["2021-1-01":"2023-12-31"]
+ return spx_mxn
 
-spx = download_data("^GSPC", "2021-01-01", fin)
-
-# calculating assets prices in mexican pesos
-spx = spx.join(df)
-spx = spx['^GSPC']
-
-spx_mxn = spx.mul(mxn, axis = 0)["2021-1-01":"2023-12-31"]
+spx_mxn = sp_pesos()
 
 # All portfolios and benchmark dataframe
 backtest_prices = df_mxn["2021-01-01":"2023-12-31"]
 
 # Black-Litterman
-# Prior Distribution
-# equally-weighted portfolio
-prior_wts = np.ones(n)/n
-# 0.5 sharpe-ratio
-bl_sharpe = 0.5
-# assets returns' covariance matrix
-returns_cov = returns_test.cov()
-# Prior portfolio volatility
-prior_vol = sqrt(prior_wts.T@returns_cov@prior_wts)
-# Risk aversion factor = sharpe*(1/vol)
-risk_aversion = bl_sharpe/prior_vol
-# prior distribution mean (Normal distribution).
-prior_mean = array(risk_aversion*returns_cov@prior_wts)[:,newaxis]
-# tau factor = 1/number of observations
-tau = 1/len(returns_test)
-# prior distribution covariance matrix
-prior_cov = tau*returns_cov
+@st.cache_data
+def bl_portfolio():
+ # Prior Distribution
+ # equally-weighted portfolio
+ prior_wts = np.ones(n)/n
+ # 0.5 sharpe-ratio
+ bl_sharpe = 0.5
+ # assets returns' covariance matrix
+ returns_cov = returns_test.cov()
+ # Prior portfolio volatility
+ prior_vol = sqrt(prior_wts.T@returns_cov@prior_wts)
+ # Risk aversion factor = sharpe*(1/vol)
+ risk_aversion = bl_sharpe/prior_vol
+ # prior distribution mean (Normal distribution).
+ prior_mean = array(risk_aversion*returns_cov@prior_wts)[:,newaxis]
+ # tau factor = 1/number of observations
+ tau = 1/len(returns_test)
+ # prior distribution covariance matrix
+ prior_cov = tau*returns_cov
+ 
+ # Investor Views and Posterior Weights
+ P = array([[1,0,0,0,0],
+            [0,1,0,0,0],
+            [0,0,1,0,0],
+            [0,0,0,1,0],
+            [0,0,0,0,1]])
+ 
+ Q = array([[0.1],[-0.08],[0.05],[0.2],[0.1]])
+ 
+ omega = np.diag(diag(P@prior_cov@P.T))
+ 
+ # Posterior distribution and weights
+ 
+ posterior_mean = np.linalg.inv(np.linalg.inv(prior_cov)+P.T@np.linalg.inv(omega)@P)@(np.linalg.inv(prior_cov)@prior_mean+P.T@np.linalg.inv(omega)@Q)
+ 
+ bl_port_wts = (((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean)/100
+ return bl_port_wts
 
-# Investor Views and Posterior Weights
-P = array([[1,0,0,0,0],
-           [0,1,0,0,0],
-           [0,0,1,0,0],
-           [0,0,0,1,0],
-           [0,0,0,0,1]])
-
-Q = array([[0.1],[-0.08],[0.05],[0.2],[0.1]])
-
-omega = np.diag(diag(P@prior_cov@P.T))
-
-# Posterior distribution and weights
-
-posterior_mean = np.linalg.inv(np.linalg.inv(prior_cov)+P.T@np.linalg.inv(omega)@P)@(np.linalg.inv(prior_cov)@prior_mean+P.T@np.linalg.inv(omega)@Q)
-
-bl_port_wts = (((1/risk_aversion)*np.linalg.inv(returns_cov))@posterior_mean)/100
+bl_port_wts = bl_portfolio()
 
 
 # 2010-2020 portfolio summary
-max_sharpe_port_data = np.concatenate([np.around(max_sharpe_port['x']*100,2), 
-                        np.around(portfolio_stats(max_sharpe_port['x']),4)])
-min_vol_port_data = np.concatenate([around(min_vol_port['x']*100,2), 
-                     around(portfolio_stats(min_vol_port['x']),4)])
-ret_10_port_data = np.concatenate([around(efport.iloc[0,3]*100,2),
-                    around(portfolio_stats(efport.iloc[0,3]),4)])
-bl_port_data = np.concatenate([around(bl_port_wts.flatten()*100,2),
-                    around(portfolio_stats(bl_port_wts.flatten()),4)])
+@st.cache_data
+def prior_portfolio_summary():
+ max_sharpe_port_data = np.concatenate([np.around(max_sharpe_port['x']*100,2), 
+                         np.around(portfolio_stats(max_sharpe_port['x']),4)])
+ min_vol_port_data = np.concatenate([around(min_vol_port['x']*100,2), 
+                      around(portfolio_stats(min_vol_port['x']),4)])
+ ret_10_port_data = np.concatenate([around(efport.iloc[0,3]*100,2),
+                     around(portfolio_stats(efport.iloc[0,3]),4)])
+ bl_port_data = np.concatenate([around(bl_port_wts.flatten()*100,2),
+                     around(portfolio_stats(bl_port_wts.flatten()),4)])
+ 
+ test_df = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_port_data,
+                         "Min Volatility": min_vol_port_data,
+                         "10% Returns": ret_10_port_data,
+                         "Black-Litterman": bl_port_data})
+ test_df.index = tickers + stats
+ return test_df
 
-test_df = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_port_data,
-                        "Min Volatility": min_vol_port_data,
-                        "10% Returns": ret_10_port_data,
-                        "Black-Litterman": bl_port_data})
-test_df.index = tickers + stats
+test_df = prior_portfolio_summary()
 
 markowitz_ports = test_df.columns[0:3]
 
 # 2021-2023 backtesting
-# Prices
-max_sharpe_prices = backtest_prices.multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
-min_vol_prices = backtest_prices.multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
-ret_10_prices = backtest_prices.multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
-equal_wts_prices = backtest_prices.multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
-bl_prices = backtest_prices.multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
-
-backtest_port_prices = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices,
-                        "Min Volatility": min_vol_prices,
-                        "10% Returns": ret_10_prices,
-                        "Equal Weights": equal_wts_prices,
-                        "Black-litterman": bl_prices,
-                        "S&P 500": spx_mxn})
-
 # Summary statistics
+@st.cache_data
+def backtest_stats():
+ # Prices
+ max_sharpe_prices = backtest_prices.multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
+ min_vol_prices = backtest_prices.multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
+ ret_10_prices = backtest_prices.multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
+ equal_wts_prices = backtest_prices.multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
+ bl_prices = backtest_prices.multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
+ 
+ backtest_port_prices = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices,
+                         "Min Volatility": min_vol_prices,
+                         "10% Returns": ret_10_prices,
+                         "Equal Weights": equal_wts_prices,
+                         "Black-litterman": bl_prices,
+                         "S&P 500": spx_mxn})
+ annual_returns = backtest_port_prices.resample('Y').last().pct_change().dropna()
+ two_year_returns = backtest_port_prices.resample('2Y').last().pct_change().dropna()
+ backtest_returns = backtest_port_prices.pct_change().dropna()
+ backtest_means = backtest_returns.mean()
+ backtest_sds = backtest_returns.std()
+ backtest_skews = backtest_returns.skew()
+ backtest_kurtosis = backtest_returns.kurtosis()
+ backtest_VaR = backtest_returns.quantile(0.05)
+ backtest_cVaR = backtest_returns.apply(calcular_cvar,args = (0.95,),axis=0)
+ backtest_sharpes = backtest_returns.apply(sharpe_ratio, args = (rf/252,), axis = 0)
+ backtest_sortinos = backtest_returns.apply(sortino_ratio, args = (rf/252,), axis = 0)
+ backtest_drawdons = backtest_returns.apply(drawdon, axis=0)
+ backtest_cum_ret = (backtest_returns+1).cumprod()
+ 
+ backtest_summary_df = pd.DataFrame([backtest_means,backtest_sds,
+                                     backtest_skews,backtest_kurtosis,
+                                     backtest_VaR,backtest_cVaR,backtest_sharpes,
+                                     backtest_sortinos,backtest_drawdons, 
+                                     backtest_cum_ret.iloc[-1]],
+                                     index = ['mean','sd','skew','kurtosis',
+                                              'VaR 95%','cVaR 95%', 
+                                              'sharpe ratio','sortino ratio',
+                                              'max drawdon', 'cumulative returns'])
+ 
+ backtest_summary_df = pd.DataFrame(np.vstack([backtest_summary_df, annual_returns, two_year_returns]))
+ backtest_summary_df.columns = ['Max Sharpe Ratio', 'Min Volatility', '10% Returns', 'Equal Weights', 'Black-Litterman', 'S&P 500']
+ backtest_summary_df.index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 
+                              'sharpe ratio','sortino ratio','max drawdon', 'cumulative returns',
+                              '2022 annual returns','2023 annual returns', 'total returns']
 
-annual_returns = backtest_port_prices.resample('Y').last().pct_change().dropna()
-two_year_returns = backtest_port_prices.resample('2Y').last().pct_change().dropna()
-backtest_returns = backtest_port_prices.pct_change().dropna()
-backtest_means = backtest_returns.mean()
-backtest_sds = backtest_returns.std()
-backtest_skews = backtest_returns.skew()
-backtest_kurtosis = backtest_returns.kurtosis()
-backtest_VaR = backtest_returns.quantile(0.05)
-backtest_cVaR = backtest_returns.apply(calcular_cvar,args = (0.95,),axis=0)
-backtest_sharpes = backtest_returns.apply(sharpe_ratio, args = (rf/252,), axis = 0)
-backtest_sortinos = backtest_returns.apply(sortino_ratio, args = (rf/252,), axis = 0)
-backtest_drawdons = backtest_returns.apply(drawdon, axis=0)
-backtest_cum_ret = (backtest_returns+1).cumprod()
+ return backtest_summary_df
 
-backtest_summary_df = pd.DataFrame([backtest_means,backtest_sds,
-                                    backtest_skews,backtest_kurtosis,
-                                    backtest_VaR,backtest_cVaR,backtest_sharpes,
-                                    backtest_sortinos,backtest_drawdons, 
-                                    backtest_cum_ret.iloc[-1]],
-                                    index = ['mean','sd','skew','kurtosis',
-                                             'VaR 95%','cVaR 95%', 
-                                             'sharpe ratio','sortino ratio',
-                                             'max drawdon', 'cumulative returns'])
+backtest_summary_df = backtest_stats
 
-backtest_summary_df = pd.DataFrame(np.vstack([backtest_summary_df, annual_returns, two_year_returns]))
-backtest_summary_df.columns = ['Max Sharpe Ratio', 'Min Volatility', '10% Returns', 'Equal Weights', 'Black-Litterman', 'S&P 500']
-backtest_summary_df.index = ['mean','sd','skew','kurtosis','VaR 95%','cVaR 95%', 
-                             'sharpe ratio','sortino ratio','max drawdon', 'cumulative returns',
-                             '2022 annual returns','2023 annual returns', 'total returns']
+@st.cache_data
+def pre_df(x):
+ return x["2010-01-01":"2020-12-31"]
+@st.cache_data
+def post_df(x):
+ return x["2021-01-01":"2023-12-31"]
+
+
 
 # Asset Visualization df
 # S&P500 en pesos
+@st.cache_data
+def mxn_prices_full()
+ spx_all = download_data("^GSPC", inicio, fin)
+ # calculating assets prices in mexican pesos
+ spx_all = spx_all.join(df_mxn)
+ spx_all = spx_all['^GSPC']
+ spx_all_mxn = spx_all.mul(mxn, axis = 0)
+ spx_all_mxn.columns = ['S&P 500']
+ df_final = df_mxn
+ df_final['S&P 500'] = spx_all_mxn
+ df_final = df_final.apply(lambda x: 100*(x/x[0]))
+ return df_final
+ 
+df_final = mxn_prices_full()
 
-spx_all = download_data("^GSPC", inicio, fin)
-# calculating assets prices in mexican pesos
-spx_all = spx_all.join(df_mxn)
-spx_all = spx_all['^GSPC']
-spx_all_mxn = spx_all.mul(mxn, axis = 0)
-spx_all_mxn.columns = ['S&P 500']
-df_final = df_mxn
-df_final['S&P 500'] = spx_all_mxn
-df_final = df_final.apply(lambda x: 100*(x/x[0]))
-df_final_pre = df_final["2010-01-01":"2020-12-31"]
-df_final_post = df_final["2021-01-01":"2023-12-31"]
+df_final_pre = pre_df(df_final)
+df_final_post = post_df(df_final)
 
 # Full period portfolios prices
-max_sharpe_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
-min_vol_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
-ret_10_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
-equal_wts_prices_final = df_final.iloc[:,0:5].multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
-bl_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
-bl_prices_final = (100*bl_prices_final)/bl_prices_final[0]
-port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
-                        "Min Volatility": min_vol_prices_final,
-                        "10% Returns": ret_10_prices_final,
-                        "Equal Weights": equal_wts_prices_final,
-                        "Black-litterman": bl_prices_final,
-                        "S&P 500": (100*(spx_all_mxn))/spx_all_mxn[0]})
-port_prices_final = port_prices_final.replace([0],np.nan).dropna()
-port_prices_final_pre = port_prices_final["2010-01-01":"2020-12-31"]
-port_prices_final_post = port_prices_final["2021-01-01":"2023-12-31"]
-port_returns_final = port_prices_final.pct_change().dropna()
-port_returns_final = port_returns_final.replace([np.inf, -np.inf,-1],np.nan).dropna()
-port_returns_final_pre = port_returns_final["2010-01-01":"2020-12-31"]
-port_returns_final_post = port_returns_final["2021-01-01":"2023-12-31"]
+@st.cache_data
+def final_portfolio_prices():
+
+ max_sharpe_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
+ min_vol_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
+ ret_10_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
+ equal_wts_prices_final = df_final.iloc[:,0:5].multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
+ bl_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
+ bl_prices_final = (100*bl_prices_final)/bl_prices_final[0]
+ port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
+                         "Min Volatility": min_vol_prices_final,
+                         "10% Returns": ret_10_prices_final,
+                         "Equal Weights": equal_wts_prices_final,
+                         "Black-litterman": bl_prices_final,
+                         "S&P 500": (100*(spx_all_mxn))/spx_all_mxn[0]})
+ port_prices_final = port_prices_final.replace([0],np.nan).dropna()
+ 
+ return port_prices_final
+
+port_prices_final = final_portfolio_prices()
+
+
+port_prices_final_pre = pre_df(port_prices_final)
+port_prices_final_post = post_df(port_prices_final)
+
+@st.cache_data
+def final_potfolio_returns():
+ port_returns_final = port_prices_final.pct_change().dropna()
+ port_returns_final = port_returns_final.replace([np.inf, -np.inf,-1],np.nan).dropna()
+ return port_returns_final
+
+port_returns_final = final_portfolio_returns()
+
+
+port_returns_final_pre = pre_df(port_returns_final)
+port_returns_final_post = post_df(port_returns_final)
 
 # Visualization
 
