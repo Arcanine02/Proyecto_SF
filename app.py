@@ -371,6 +371,19 @@ def bl_portfolio():
 
 bl_port_wts = bl_portfolio()
 
+# B-L Perspectives
+# Returns
+bl_returns = [0.1,-0.08,0.05,0.2,0.1]
+bl_returns_dict = dict(zip(tickers, bl_returns))
+
+# Opinions
+
+opinion_1 = '''* My perspective for the iShares Core U.S. Aggregate Bond ETF (AGG) is that it will yield a 10% return one year from now.
+* My main reason for this optimistic view is fueled by Donald Trump's promises to apply tariffs to foreign merchandises.
+* This will increase inflation in the U.S.,  boosting the returns of fixed income assets such as Treasuries, which represent a big chunk of
+the AGG ETF's asset allotacion.'''
+
+
 
 # 2010-2020 portfolio summary
 @st.cache_data
@@ -692,6 +705,9 @@ with tab2:
 with tab3:
  
  st.header("Black-Litterman Portfolio Analysis")
+
+ st.subheader("Investor views for each asset")
+ st.write(opinion_1)
  
  st.write("Weights of the assets in the portfolio")
  col_wb1, col_wb2, col_wb3 = st.columns(3)
