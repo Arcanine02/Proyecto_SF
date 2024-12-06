@@ -471,7 +471,7 @@ def post_df(x):
 # Asset Visualization df
 # S&P500 en pesos
 @st.cache_data
-def mxn_prices_full()
+def mxn_prices_full():
  spx_all = download_data("^GSPC", inicio, fin)
  # calculating assets prices in mexican pesos
  spx_all = spx_all.join(df_mxn)
