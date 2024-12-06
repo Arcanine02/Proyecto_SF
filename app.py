@@ -93,7 +93,7 @@ def crear_histograma_distribucion(returns, var_95, cvar_95, title):
         x=bins[:-1][mask_before_var],
         y=counts[mask_before_var],
         width=np.diff(bins)[mask_before_var],
-        name='Retornos < VaR',
+        name='Returns < VaR',
         marker_color='rgba(255, 65, 54, 0.6)'
     ))
     
@@ -102,7 +102,7 @@ def crear_histograma_distribucion(returns, var_95, cvar_95, title):
         x=bins[:-1][~mask_before_var],
         y=counts[~mask_before_var],
         width=np.diff(bins)[~mask_before_var],
-        name='Retornos > VaR',
+        name='Returns > VaR',
         marker_color='rgba(31, 119, 180, 0.6)'
     ))
     
@@ -126,8 +126,8 @@ def crear_histograma_distribucion(returns, var_95, cvar_95, title):
     # Actualizar el diseño
     fig.update_layout(
         title=title,
-        xaxis_title='Retornos',
-        yaxis_title='Frecuencia',
+        xaxis_title='Returns',
+        yaxis_title='Frequence',
         showlegend=True,
         barmode='overlay',
         bargap=0
@@ -347,6 +347,8 @@ test_df = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_port_data,
                         "Black-Litterman": bl_port_data})
 test_df.index = tickers + stats
 
+markowitz_ports = test_df.columns[0:3]
+
 # 2021-2023 backtesting
 # Prices
 max_sharpe_prices = backtest_prices.multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
@@ -404,11 +406,32 @@ spx_all_mxn.columns = ['S&P 500']
 df_final = df_mxn
 df_final['S&P 500'] = spx_all_mxn
 df_final = df_final.apply(lambda x: 100*(x/x[0]))
+df_final_pre = df_final["2010-01-01":"2020-12-31"]
+df_final_post = df_final["2021-01-01":"2023-12-31"]
 
-# Visualizacion
+# Full period portfolios prices
+max_sharpe_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,0]/100, axis = 1).sum(axis = 1)
+min_vol_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,1]/100, axis = 1).sum(axis = 1)
+ret_10_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,2]/100, axis = 1).sum(axis = 1)
+equal_wts_prices_final = df_final.iloc[:,0:5].multiply(np.ones(5)/5, axis = 1).sum(axis = 1)
+bl_prices_final = df_final.iloc[:,0:5].multiply(test_df.iloc[0:5,3]/100, axis = 1).sum(axis = 1)
+bl_prices_final = (100*bl_prices_final)/bl_prices_final[0]
+port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
+                        "Min Volatility": min_vol_prices_final,
+                        "10% Returns": ret_10_prices_final,
+                        "Equal Weights": equal_wts_prices_final,
+                        "Black-litterman": bl_prices_final,
+                        "S&P 500": (100*(spx_all_mxn))/spx_all_mxn[0]})
+port_prices_final_pre = port_prices_final["2010-01-01":"2020-12-31"]
+port_prices_final_post = port_prices_final["2021-01-01":"2023-12-31"]
+port_returns_final = port_prices_final.pct_change().dropna()
+port_returns_final_pre = port_returns_final["2010-01-01":"2020-12-31"]
+port_returns_final_post = port_returns_final["2021-01-01":"2023-12-31"]
 
-# Crear pestañas
-tab1, tab2 = st.tabs(["Asset Analysis", "Portfolio Analysis"])
+# Visualization
+
+# Create tabs
+tab1, tab2, tab3 = st.tabs(["Asset Analysis", "Markowitz Portfolios Analysis", "Black-Litterman Portfolio Analysis"])
 
 with tab1:
   st.header("Individual Asset Analysis")
@@ -458,34 +481,109 @@ with tab1:
   st.plotly_chart(hist_fig, use_container_width=True, key="returns_hist")
 
 with tab2:
-  st.header("Optimal Portfolios")
-  # Plot efficient frontier portfolio
-  fig_ef = px.scatter(
-    efport, x='targetvols', y='targetrets',  color='targetsharpe', 
-    range_color = [0.8,1.2],
-    labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
-    title="Efficient Frontier Portfolio"
-     ).update_traces(mode='markers', marker=dict(symbol='cross'))
+ st.header("Optimal Portfolios")
+
+ # Plot efficient frontier portfolio
+ fig_ef = px.scatter(
+   efport, x='targetvols', y='targetrets',  color='targetsharpe', 
+   range_color = [0.8,1.2],
+   labels={'targetrets': 'Expected Return', 'targetvols': 'Expected Volatility','targetsharpe': 'Sharpe Ratio'},
+   title="Efficient Frontier Portfolio"
+    ).update_traces(mode='markers', marker=dict(symbol='cross'))
   
-  # Plot maximum sharpe portfolio
-  fig_ef.add_scatter(
-      mode='markers',
-      x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
-      y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
-      marker=dict(color='red', size=20, symbol='star'),
-      name = 'Max Sharpe'
-  ).update(layout_showlegend=False)
+ # Plot maximum sharpe portfolio
+ fig_ef.add_scatter(
+     mode='markers',
+     x=[100*portfolio_stats(max_sharpe_port['x'])[1]],
+     y=[100*portfolio_stats(max_sharpe_port['x'])[0]],
+     marker=dict(color='red', size=20, symbol='star'),
+     name = 'Max Sharpe'
+ ).update(layout_showlegend=False)
   
-  # Plot minimum variance portfolio
-  fig_ef.add_scatter(
-      mode='markers',
-      x=[100*portfolio_stats(min_vol_port['x'])[1]],
-      y=[100*portfolio_stats(min_vol_port['x'])[0]],
-      marker=dict(color='green', size=20, symbol='star'),
-      name = 'Min Variance'
-  ).update(layout_showlegend=False)
+ # Plot minimum variance portfolio
+ fig_ef.add_scatter(
+     mode='markers',
+     x=[100*portfolio_stats(min_vol_port['x'])[1]],
+     y=[100*portfolio_stats(min_vol_port['x'])[0]],
+     marker=dict(color='green', size=20, symbol='star'),
+     name = 'Min Variance'
+ ).update(layout_showlegend=False)
   
-  # Show spikes
-  fig_ef.update_xaxes(showspikes=True)
-  fig_ef.update_yaxes(showspikes=True)
-  st.plotly_chart(fig_ef, use_container_width=True, key="efficient_frontier")
+ # Show spikes
+ fig_ef.update_xaxes(showspikes=True)
+ fig_ef.update_yaxes(showspikes=True)
+ st.plotly_chart(fig_ef, use_container_width=True, key="efficient_frontier")
+
+ # Select portfolio
+ selected_portfolio = st.selectbox("Select a portfolio to analyze:", markowitz_ports)
+ st.write("Weights of the assets in the portfolio")
+ col_w1, col_w2, col_w3, col_w4, col_w5 = st.columns(5)
+ col_w1.metric(tickers[0], f"{100*test_df.loc[tickers[0],selected_asset]:.2%}")
+ col_w2.metric(tickers[1], f"{100*test_df.loc[tickers[1],selected_asset]:.2%}")
+ col_w3.metric(tickers[2], f"{100*test_df.loc[tickers[2],selected_asset]:.2%}")
+ col_w4.metric(tickers[3], f"{100*test_df.loc[tickers[3],selected_asset]:.2%}")
+ col_w5.metric(tickers[4], f"{100*test_df.loc[tickers[4],selected_asset]:.2%}")
+ 
+ st.subheader("2010-2020 Portfolio Construction")
+ st.write("Statistics of the selected portfolio's daily returns")
+ col_m1, col_m2, col_m3 = st.columns(3)
+ col_m1.metric("Mean", f"{100*test_df.loc["Returns",selected_asset]:.2%}")
+ col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_asset]:.2f}")
+ col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_asset]:.2f}")
+
+ # Plotting the portfolio vs S&P 500 benchmark
+ fig_port1 = go.Figure()
+
+ fig_port1.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post[selected_portfolio], name = selected_portfolio))
+ fig_port1.add_trace(go.Scatter(x=df_final_post.index, y=df_final_post['S&P 500'], name='S&P 500'))
+  
+ fig_port1.update_layout(
+     title=f'Normalized Prices: {selected_portfolio} vs S&P 500 (Base 100)',
+     xaxis_title='Date',
+     yaxis_title='Normalized Price')
+
+ st.plotly_chart(fig_port1, use_container_width=True, key="price_normalized_port")
+ 
+ # Histogram for VaR and cVaR
+ hist_returns_port = port_returns_final_pre[selected_portfolio]
+ hist_fig_port = crear_histograma_distribucion(hist_returns_port,
+                                          np.quantile(hist_returns_port,0.05) , 
+                                          calcular_cvar(hist_returns_port,0.95), 
+                                          f"Daily returns of {selected_portfolio} between 2010 and 2020")
+ 
+ st.plotly_chart(hist_fig_port, use_container_width=True, key="returns_hist_port")
+
+ 
+ st.subheader("2021-2023 backtesting")
+
+ st.write("Statistics of the selected portfolio's daily returns")
+ col_m1b, col_m2b, col_m3b = st.columns(3)
+ col_m1b.metric("Mean", f"{100*test_df.loc["Returns",selected_asset]:.2%}")
+ col_m2b.metric("Volatility", f"{test_df.loc["Volatility",selected_asset]:.2f}")
+ col_m3b.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_asset]:.2f}")
+
+ # Plotting the portfolio vs S&P 500 benchmark
+ fig_asset = go.Figure()
+
+ fig_port2.add_trace(go.Scatter(x=port_prices_final_pre.index, y=port_prices_final_pre[selected_portfolio], name = selected_portfolio))
+ fig_port2.add_trace(go.Scatter(x=df_final_pre.index, y=df_final_pre['S&P 500'], name='S&P 500'))
+  
+ fig_port2.update_layout(
+     title=f'Normalized Prices: {selected_portfolio} vs S&P 500 (Base 100)',
+     xaxis_title='Date',
+     yaxis_title='Normalized Price')
+
+ st.plotly_chart(fig_port2, use_container_width=True, key="price_normalized_port_2")
+ 
+ # Histogram for VaR and cVaR
+ hist_returns_port_2 = port_returns_final_post[selected_portfolio]
+ hist_fig_port_2 = crear_histograma_distribucion(hist_returns_port,
+                                          np.quantile(hist_returns_port,0.05) , 
+                                          calcular_cvar(hist_returns_port,0.95), 
+                                          f"Daily returns of {selected_portfolio} between 2010 and 2020")
+ 
+ st.plotly_chart(hist_fig_port, use_container_width=True, key="returns_hist_port_2")
+
+with tab3:
+ 
+ st.header("Black-Litterman Portfolio Analysis")
