@@ -237,7 +237,6 @@ cons_max_sharpe = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
 bnds_max_sharpe = tuple((0, 1) for x in range(n))
 initial_wts_max_sharpe = np.ones(n)/n
 # Optimizing portfolio
-@st.cache_data
 max_sharpe_port = sco.minimize(neg_sharpe_ratio, initial_wts_max_sharpe, method = 'SLSQP', bounds = bnds_max_sharpe, constraints = cons_max_sharpe)
 # Portfolio weights
 max_sharpe_port_wts = list(zip(tickers, around(max_sharpe_port['x']*100,2)))
@@ -255,7 +254,6 @@ cons_min_vol = ({'type': 'eq', 'fun': lambda x: sum(x) - 1})
 bnds_min_vol = tuple((0, 1) for x in range(n))
 initial_wts_min_vol = np.ones(n)/n
 # Optimizing portfolio
-@st.cache_data
 min_vol_port = sco.minimize(min_volatility, initial_wts_min_vol, method = 'SLSQP', 
                             bounds = bnds_min_vol, constraints = cons_min_vol)
 # Portfolio weights
