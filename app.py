@@ -77,6 +77,64 @@ def download_data(assets, start_date, end_date):
   data = yf.download(assets, start = start_date, end = end_date)["Close"]
   return data
 
+# Función para crear histogramas 
+def crear_histograma_distribucion(returns, var_95, cvar_95, title):
+    # Crear el histograma base
+    fig = go.Figure()
+    
+    # Calcular los bins para el histograma
+    counts, bins = np.histogram(returns, bins=50)
+    
+    # Separar los bins en dos grupos: antes y después del VaR
+    mask_before_var = bins[:-1] <= var_95
+    
+    # Añadir histograma para valores antes del VaR (rojo)
+    fig.add_trace(go.Bar(
+        x=bins[:-1][mask_before_var],
+        y=counts[mask_before_var],
+        width=np.diff(bins)[mask_before_var],
+        name='Retornos < VaR',
+        marker_color='rgba(255, 65, 54, 0.6)'
+    ))
+    
+    # Añadir histograma para valores después del VaR (azul)
+    fig.add_trace(go.Bar(
+        x=bins[:-1][~mask_before_var],
+        y=counts[~mask_before_var],
+        width=np.diff(bins)[~mask_before_var],
+        name='Retornos > VaR',
+        marker_color='rgba(31, 119, 180, 0.6)'
+    ))
+    
+    # Añadir líneas verticales para VaR y CVaR
+    fig.add_trace(go.Scatter(
+        x=[var_95, var_95],
+        y=[0, max(counts)],
+        mode='lines',
+        name='VaR 95%',
+        line=dict(color='green', width=2, dash='dash')
+    ))
+    
+    fig.add_trace(go.Scatter(
+        x=[cvar_95, cvar_95],
+        y=[0, max(counts)],
+        mode='lines',
+        name='CVaR 95%',
+        line=dict(color='purple', width=2, dash='dot')
+    ))
+    
+    # Actualizar el diseño
+    fig.update_layout(
+        title=title,
+        xaxis_title='Retornos',
+        yaxis_title='Frecuencia',
+        showlegend=True,
+        barmode='overlay',
+        bargap=0
+    )
+    
+    return fig
+
 # begining and and dates for analysis
 inicio = "2010-01-01"
 fin = "2023-12-31"
@@ -389,6 +447,12 @@ with tab1:
       yaxis_title='Normalized Price')
 
   st.plotly_chart(fig_asset, use_container_width=True, key="price_normalized")
+
+# Histogram for VaR and cVaR
+hist_returns = returns_test[selected_asset]
+crear_histograma_distribucion(hist_returns, 
+                              np.quantile(hist_returns,0.05) , 
+                              calcular_cvar(hist_returns,0.95), f"Daily returns of {selected_asset} between 2010 and 2020")
 
 with tab2:
   st.header("Optimal Portfolios")
