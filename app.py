@@ -455,7 +455,7 @@ with tab1:
                                            calcular_cvar(hist_returns,0.95), 
                                            f"Daily returns of {selected_asset} between 2010 and 2020")
  
-  st.plotly_chart(hist_fig, use_container_width=True, key="price_normalized")
+  st.plotly_chart(hist_fig, use_container_width=True, key="returns_hist")
 
 with tab2:
   st.header("Optimal Portfolios")
