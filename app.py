@@ -760,7 +760,7 @@ with tab3:
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port2_bl = go.Figure()
 
- fig_port2_bl.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post["Black-Litterman"], name = "Black-Litterman"))
+ fig_port2_bl.add_trace(go.Scatter(x=port_prices_final_post.index, y=port_prices_final_post["Black-litterman"], name = "Black-Litterman"))
  fig_port2_bl.add_trace(go.Scatter(x=df_final_post.index, y=df_final_post['S&P 500'], name='S&P 500'))
   
  fig_port2_bl.update_layout(
