@@ -422,6 +422,7 @@ port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
                         "Equal Weights": equal_wts_prices_final,
                         "Black-litterman": bl_prices_final,
                         "S&P 500": (100*(spx_all_mxn))/spx_all_mxn[0]})
+port_prices_final = port_prices_final.replace([0],np.nan).dropna()
 port_prices_final_pre = port_prices_final["2010-01-01":"2020-12-31"]
 port_prices_final_post = port_prices_final["2021-01-01":"2023-12-31"]
 port_returns_final = port_prices_final.pct_change().dropna()
