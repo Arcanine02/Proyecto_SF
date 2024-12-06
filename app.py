@@ -425,6 +425,7 @@ port_prices_final = pd.DataFrame({"Max Sharpe Ratio": max_sharpe_prices_final,
 port_prices_final_pre = port_prices_final["2010-01-01":"2020-12-31"]
 port_prices_final_post = port_prices_final["2021-01-01":"2023-12-31"]
 port_returns_final = port_prices_final.pct_change().dropna()
+port_returns_final = port_returns_final.replace([np.inf, -np.inf],np.nan).dropna()
 port_returns_final_pre = port_returns_final["2010-01-01":"2020-12-31"]
 port_returns_final_post = port_returns_final["2021-01-01":"2023-12-31"]
 
@@ -580,7 +581,7 @@ with tab2:
  hist_fig_port_2 = crear_histograma_distribucion(hist_returns_port,
                                           np.quantile(hist_returns_port,0.05) , 
                                           calcular_cvar(hist_returns_port,0.95), 
-                                          f"Daily returns of {selected_portfolio} between 2010 and 2020")
+                                          f"Daily returns of {selected_portfolio} between 2021 and 2023")
  
  st.plotly_chart(hist_fig_port, use_container_width=True, key="returns_hist_port_2")
 
