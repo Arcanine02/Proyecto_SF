@@ -570,7 +570,7 @@ with tab1:
 
   st.write(descriptions_dict[selected_asset])
 
-  st.write(f"Daily Summary Statistics for the returns of the {selected_asset} ETF between 2010 and 2020.")
+  st.subheader(f"Daily Summary Statistics for the returns of the {selected_asset} ETF between 2010 and 2020.")
   
   col1, col2, col3 = st.columns(3)
   col1.metric("Mean Returns", f"{100*summary_df.loc['mean',selected_asset]:.3%}")
@@ -612,6 +612,14 @@ with tab1:
 
 with tab2:
  st.header("Optimal Portfolios")
+
+ st.write('''This plot represents the curve of optimal portfolios given by the Markowitz model, known as the efficient frontier.
+ The dots in the plot represents the optimal portfolios in terms of volatility, when considering a fixed level of returns.
+ This means that if one wished to recieve a certain level of returns, the least possible level of volatility given by the 
+ Markowitz model is shown in the plot.
+ The stars in the plot represent both the portfolio with the minumum volatility (green star) and the portfolio with the maximum 
+ sharpe ratio (red star). Below this chart, the user will be able to select which portfolio they wish to study, and 
+ an exploratory analysis of said portfolio will be shown.''')
 
  # Plot efficient frontier portfolio
  fig_ef = px.scatter(
@@ -655,7 +663,11 @@ with tab2:
  col_w5.metric(tickers[4], f"{0.01*test_df.loc[tickers[4],selected_portfolio]:.2%}")
  
  st.subheader("2010-2020 Portfolio Construction")
- st.write("Statistics of the selected portfolio's daily returns")
+ st.write('''This section will show an exploratory analysis of the chosen portfolio, considering the time period 
+ for which the portfolio was built. Bearing this in mind, the user can consider the below ststistics as those balonging to the 
+ best possible porfolio given the restriction they selected (such as minimum volatility or maximum sharpe ratio).''')
+ 
+ st.subheader("Statistics of the selected portfolio's daily returns")
  col_m1, col_m2, col_m3 = st.columns(3)
  col_m1.metric("Mean", f"{test_df.loc["Returns",selected_portfolio]:.3%}")
  col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.3f}")
@@ -685,8 +697,15 @@ with tab2:
 
  
  st.subheader("2021-2023 backtesting")
+ 
+ st.write('''These portfolios were designed considering the time period between 2010 and 2020. 
+ As such, the asset allocation is heavily dependent on the economic climate present during that timeframe. 
+ This section was created with the objective to show the importance of rebalancing the portfolio, as the economic situation lived
+ between 2010 and 2020 was extremely different than the one lived between 2021 and 2023.
+ From here on out, I will show the descriptive stats of the optimal portfolios made considering the 2010-2020 period, 
+ when exposed to the 2021-2023 macroeconomic conditions.''')
 
- st.write("Statistics of the selected portfolio's daily returns")
+ st.subheader("Statistics of the selected portfolio's daily returns")
  col_m1b, col_m2b, col_m3b = st.columns(3)
  col_m1b.metric("Mean", f"{backtest_summary_df.loc["mean",selected_portfolio]:.3%}")
  col_m2b.metric("Volatility", f"{backtest_summary_df.loc["sd",selected_portfolio]:.3f}")
@@ -752,8 +771,12 @@ with tab3:
  col_wb5.metric(tickers[4], f"{0.01*test_df.loc[tickers[4],"Black-Litterman"]:.2%}")
  col_wb6.metric("Risk-Free", f"{(1 - 0.01*test_df.loc[tickers[0:5],"Black-Litterman"].sum()):.2%}")
  
- st.subheader("2010-2020 Portfolio Construction")
- st.write("Statistics of the selected portfolio's daily returns")
+ st.subheader("2010-2020 Hypothetic Portfolio Performance")
+
+ st.write('''While it may be true that this portfolio was built considering its performance during the year 2025, 
+ I believe its important to at least analyze its performance when comparing it to the other portfolios.
+ As such, I will show its statistics in both timeframes: 2010-2020 and 2021-2023.''')
+ st.subheader("Statistics of the selected portfolio's daily returns")
  col_mb1, col_mb2, col_mb3 = st.columns(3)
  col_mb1.metric("Mean", f"{test_df.loc["Returns","Black-Litterman"]:.3%}")
  col_mb2.metric("Volatility", f"{test_df.loc["Volatility","Black-Litterman"]:.3f}")
@@ -782,8 +805,14 @@ with tab3:
  st.plotly_chart(hist_fig_port_bl, use_container_width=True, key="returns_hist_port_bl")
 
  
- st.subheader("2021-2023 backtesting")
- st.write("Statistics of the selected portfolio's daily returns")
+ st.subheader("2021-2023 Hypothetic Portfolio Performance")
+
+ st.write('''Just as in the Markowitz section, from this point onward, I'll show the descriptive stats of the 
+ Black-Litterman portfolio designed by considering the economic climate of the year 2025. 
+ This is more of an experiment than a backtest, as the performance of this portfolio hasn't been measured for its intended timeframe.
+ However, it will be interesting to analyse its performance during the post-pandemic years.''')
+ 
+ st.subheader("Statistics of the selected portfolio's daily returns")
  col_m1bl, col_m2bl, col_m3bl = st.columns(3)
  col_m1bl.metric("Mean", f"{backtest_summary_df.loc["mean","Black-Litterman"]:.3%}")
  col_m2bl.metric("Volatility", f"{backtest_summary_df.loc["sd","Black-Litterman"]:.3f}")
