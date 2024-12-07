@@ -654,7 +654,7 @@ with tab2:
 
  # Select portfolio
  selected_portfolio = st.selectbox("Select a portfolio to analyze:", markowitz_ports)
- st.write("Weights of the assets in the portfolio")
+ st.subheader("Weights of the assets in the portfolio")
  col_w1, col_w2, col_w3, col_w4, col_w5 = st.columns(5)
  col_w1.metric(tickers[0], f"{0.01*test_df.loc[tickers[0],selected_portfolio]:.2%}")
  col_w2.metric(tickers[1], f"{0.01*test_df.loc[tickers[1],selected_portfolio]:.2%}")
