@@ -572,7 +572,7 @@ with tab1:
   st.write(f"Daily Summary Statistics for the returns of the {selected_asset} ETF between 2010 and 2020.")
   
   col1, col2, col3 = st.columns(3)
-  col1.metric("Mean Returns", f"{100*summary_df.loc['mean',selected_asset]:.2%}")
+  col1.metric("Mean Returns", f"{100*summary_df.loc['mean',selected_asset]:.3%}")
   col2.metric("Volatility", f"{summary_df.loc['sd',selected_asset]:.4f}")
   col3.metric("Skew", f"{summary_df.loc['skew',selected_asset]:.2f}")
   
@@ -583,9 +583,9 @@ with tab1:
   
   
   col7, col8, col9 = st.columns(3)
-  col7.metric("Sharpe Ratio", f"{summary_df.loc['sharpe ratio',selected_asset]:.2f}")
-  col8.metric("Sortino Ratio", f"{summary_df.loc['sortino ratio',selected_asset]:.2f}")
-  col9.metric("Max Drawdon", f"{summary_df.loc['max drawdon',selected_asset]:.2f}")
+  col7.metric("Sharpe Ratio", f"{summary_df.loc['sharpe ratio',selected_asset]:.3f}")
+  col8.metric("Sortino Ratio", f"{summary_df.loc['sortino ratio',selected_asset]:.3f}")
+  col9.metric("Max Drawdon", f"{summary_df.loc['max drawdon',selected_asset]:.3f}")
         
 
   fig_asset = go.Figure()
@@ -656,9 +656,9 @@ with tab2:
  st.subheader("2010-2020 Portfolio Construction")
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1, col_m2, col_m3 = st.columns(3)
- col_m1.metric("Mean", f"{test_df.loc["Returns",selected_portfolio]:.2%}")
- col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.2f}")
- col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.2f}")
+ col_m1.metric("Mean", f"{test_df.loc["Returns",selected_portfolio]:.3%}")
+ col_m2.metric("Volatility", f"{test_df.loc["Volatility",selected_portfolio]:.3f}")
+ col_m3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio",selected_portfolio]:.3f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port1 = go.Figure()
@@ -687,8 +687,8 @@ with tab2:
 
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1b, col_m2b, col_m3b = st.columns(3)
- col_m1b.metric("Mean", f"{backtest_summary_df.loc["mean",selected_portfolio]:.2%}")
- col_m2b.metric("Volatility", f"{backtest_summary_df.loc["sd",selected_portfolio]:.2f}")
+ col_m1b.metric("Mean", f"{backtest_summary_df.loc["mean",selected_portfolio]:.3%}")
+ col_m2b.metric("Volatility", f"{backtest_summary_df.loc["sd",selected_portfolio]:.3f}")
  col_m3b.metric("Skew", f"{backtest_summary_df.loc["skew",selected_portfolio]:.2f}")
  
  col_m4b, col_m5b, col_m6b = st.columns(3)
@@ -697,9 +697,9 @@ with tab2:
  col_m6b.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%",selected_portfolio]:.2%}")
  
  col_m7b, col_m8b, col_m9b = st.columns(3)
- col_m7b.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio",selected_portfolio]:.2f}")
- col_m8b.metric("Sortino Ratio", f"{backtest_summary_df.loc["sortino ratio",selected_portfolio]:.2f}")
- col_m9b.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon",selected_portfolio]:.2f}")
+ col_m7b.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio",selected_portfolio]:.3f}")
+ col_m8b.metric("Sortino Ratio", f"{backtest_summary_df.loc["sortino ratio",selected_portfolio]:.3f}")
+ col_m9b.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon",selected_portfolio]:.3f}")
  
  col_m10b, col_m11b, col_m12b = st.columns(3)
  col_m10b.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns",selected_portfolio]:.2%}")
@@ -754,9 +754,9 @@ with tab3:
  st.subheader("2010-2020 Portfolio Construction")
  st.write("Statistics of the selected portfolio's daily returns")
  col_mb1, col_mb2, col_mb3 = st.columns(3)
- col_mb1.metric("Mean", f"{test_df.loc["Returns","Black-Litterman"]:.2%}")
- col_mb2.metric("Volatility", f"{test_df.loc["Volatility","Black-Litterman"]:.2f}")
- col_mb3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio","Black-Litterman"]:.2f}")
+ col_mb1.metric("Mean", f"{test_df.loc["Returns","Black-Litterman"]:.3%}")
+ col_mb2.metric("Volatility", f"{test_df.loc["Volatility","Black-Litterman"]:.3f}")
+ col_mb3.metric("Sharpe Ratio", f"{test_df.loc["Sharpe Ratio","Black-Litterman"]:.3f}")
 
  # Plotting the portfolio vs S&P 500 benchmark
  fig_port1_bl = go.Figure()
@@ -784,8 +784,8 @@ with tab3:
  st.subheader("2021-2023 backtesting")
  st.write("Statistics of the selected portfolio's daily returns")
  col_m1bl, col_m2bl, col_m3bl = st.columns(3)
- col_m1bl.metric("Mean", f"{backtest_summary_df.loc["mean","Black-Litterman"]:.2%}")
- col_m2bl.metric("Volatility", f"{backtest_summary_df.loc["sd","Black-Litterman"]:.2f}")
+ col_m1bl.metric("Mean", f"{backtest_summary_df.loc["mean","Black-Litterman"]:.3%}")
+ col_m2bl.metric("Volatility", f"{backtest_summary_df.loc["sd","Black-Litterman"]:.3f}")
  col_m3bl.metric("Skew", f"{backtest_summary_df.loc["skew","Black-Litterman"]:.2f}")
  
  col_m4bl, col_m5bl, col_m6bl = st.columns(3)
@@ -794,9 +794,9 @@ with tab3:
  col_m6bl.metric("cVaR 95%", f"{backtest_summary_df.loc["cVaR 95%","Black-Litterman"]:.2%}")
  
  col_m7bl, col_m8bl, col_m9bl = st.columns(3)
- col_m7bl.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio","Black-Litterman"]:.2f}")
- col_m8bl.metric("Sortino Ratio", f"{backtest_summary_df.loc["sortino ratio","Black-Litterman"]:.2f}")
- col_m9bl.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon","Black-Litterman"]:.2f}")
+ col_m7bl.metric("Sharpe Ratio", f"{backtest_summary_df.loc["sharpe ratio","Black-Litterman"]:.3f}")
+ col_m8bl.metric("Sortino Ratio", f"{backtest_summary_df.loc["sortino ratio","Black-Litterman"]:.3f}")
+ col_m9bl.metric("Max Drawdon", f"{backtest_summary_df.loc["max drawdon","Black-Litterman"]:.3f}")
  
  col_m10bl, col_m11bl, col_m12bl = st.columns(3)
  col_m10bl.metric("2022 Returns", f"{backtest_summary_df.loc["2022 annual returns","Black-Litterman"]:.2%}")
