@@ -378,7 +378,7 @@ bl_returns_dict = dict(zip(tickers, bl_returns))
 
 # Opinions
 
-opinion_1 = ''' * Let's begin by talking about my perspective for the iShares Core U.S. Aggregate Bond ETF (AGG): a 10% return one year from now.
+opinion_1 = ''' * Let's begin by talking about my perspective for the iShares Core U.S. Aggregate Bond ETF (AGG): A 10% return one year from now.
 My main reason for this optimistic view is fueled by Donald Trump's promises to apply tariffs to foreign merchandises.
 This will increase inflation in the U.S.,  boosting the returns of fixed income assets such as Treasuries, which represent a big chunk of
 the AGG ETF's asset allotacion.'''
@@ -392,18 +392,19 @@ their soverign bonds won't be as attractive as U.S. treasuries, which will offer
 opinion_3 = ''' * My views regarding the SPDR Gold Shares (NYSEArca) ETF converge in considering an annual freturn of 5%.
 Gold is a good asset for protection against inflation. Given my pesimistic views on inflation one year from now, 
 I consider gold to be a great asset to invest on. 
-However, given my perspectives on both american and amerging equity (which will be discussed later), I don't consider gold to be the 
+However, given my perspectives on both american and emerging equity (which will be discussed later), I don't consider gold to be the 
 best asset in this portfolio.'''
 
 opinion_4 = ''' * Let's delve into  what I consider to be the most promissing asset in this portfolio: The Invesco QQQ ETF, for which I
 predict a 20% annual return. 
-My faith in this ETF comes from both the fact that it consistently outperforms the S&P 500, and the effect that Trump's promise to cut
-corporations taxes, which will ensure an increase in the yields given by american equity. 
-These rseasons, combined with the fact that the QQQ's allocation is mostly centered on technological companies that will only continue 
+My faith in this ETF comes from both the fact that it consistently outperforms the S&P 500, and the effect of Trump's promise to cut
+corporations taxes: An increase in the yields given by american equity. 
+These reasons, combined with the fact that the QQQ's allocation is mostly centered on technological companies, which will only continue 
 to benefit with the rise of AI, make me think that the QQQ is tis portfolio's most promising ETF.'''
 
 opinion_5 = ''' * Finally, let's discuss my views on the SPDR Portfolio Emerging Markets ETF, for which I predict a 10% annual return.
-In contrast to the detrimental effect Trump will have on emerging countries sovereign bonds, I don't see this asset being greatly affected by it, 
+In contrast to the detrimental effect Trump will have on emerging countries sovereign bonds, 
+I don't see this ETF being greatly affected by his agenda, 
 given the fact that a big part of this ETF is semiconductors, 
 a neccesary good for the development of AI, and for the production of techonology in general.'''
 
