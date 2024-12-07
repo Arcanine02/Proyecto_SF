@@ -564,9 +564,8 @@ tab1, tab2, tab3 = st.tabs(["Asset Analysis", "Markowitz Portfolios Analysis", "
 
 with tab1:
   st.header("Individual Asset Analysis")
-  st.write("Every asset in this dashboard is expressed in mexican pesos.
-  
-           A risk-free rate of 4.297% is considered (the 1 year Treasury yield as of december 2nd 2024.)")
+  st.write("Every asset in this dashboard is expressed in mexican pesos.") 
+  st.write("This dashboard considers risk-free rate of 4.297%, the 1 year Treasury yield as of december 2nd 2024.")
   selected_asset = st.selectbox("Select an asset to analyze:", tickers)
 
   st.write(descriptions_dict[selected_asset])
