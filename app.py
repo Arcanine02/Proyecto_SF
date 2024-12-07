@@ -557,6 +557,8 @@ port_returns_final_post = post_df(port_returns_final)
 
 # Visualization
 
+st.title("Portfolio Management App by Santiago Anaya")
+
 # Create tabs
 tab1, tab2, tab3 = st.tabs(["Asset Analysis", "Markowitz Portfolios Analysis", "Black-Litterman Portfolio Analysis"])
 
